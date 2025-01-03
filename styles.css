@@ -47,8 +47,8 @@ textarea {
   padding-left: 20px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  border-left: 2px solid #ddd;
+  gap:5px;
+  border-left:2px solid #ddd;
 }
 
 button {
@@ -59,7 +59,7 @@ button {
   color: white;
   border: none;
   border-radius:5px;
-  cursor: pointer;
+  cursor:pointer;
 }
 
 button:hover {
@@ -71,7 +71,7 @@ button:hover {
 }
 
 .options {
-  display: flex;
+  display:flex;
   flex-direction:column;
   gap:10px;
 }
