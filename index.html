@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>PGIA ATL Skills Self-Assessment</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
 
   <div class="container">
-    <!-- TOP HEADER WITH 2 LOGOS (replace src with your actual images) -->
+
+    <!-- HEADER with 2 logos (replace src with actual images) -->
     <header>
       <div class="header-logos">
         <img src="viMontessoriLogo.png" alt="VI Montessori School Logo" class="logo-left"/>
@@ -20,22 +21,23 @@
     </header>
 
     <main>
+
       <!-- PAGE 0: Student Info -->
       <section id="page0">
         <form id="studentForm" onsubmit="return false;">
-          <label for="studentID">Student ID (required):</label>
+          <label>Student ID (required):</label>
           <input type="text" id="studentID" required />
 
-          <label for="lastName">Last Name (required):</label>
+          <label>Last Name (required):</label>
           <input type="text" id="lastName" required />
 
-          <label for="firstName">First Name (required):</label>
+          <label>First Name (required):</label>
           <input type="text" id="firstName" required />
 
-          <label for="dateField">Date:</label>
+          <label>Date:</label>
           <input type="date" id="dateField" />
 
-          <label for="gradeLevel">Grade Level:</label>
+          <label>Grade Level:</label>
           <select id="gradeLevel">
             <option value="">-- Select Grade --</option>
             <option>Grade 6</option>
@@ -47,7 +49,7 @@
             <option>Grade 12</option>
           </select>
 
-          <label for="classField">Class (Subject):</label>
+          <label>Class (Subject):</label>
           <select id="classField">
             <option value="">-- Select Class --</option>
             <option>English</option>
@@ -77,7 +79,7 @@
             <option>PE</option>
           </select>
 
-          <label for="cohortYear">Cohort Year:</label>
+          <label>Cohort Year:</label>
           <select id="cohortYear">
             <option value="">-- Select Cohort --</option>
             <option>Class of 2025</option>
@@ -90,7 +92,7 @@
             <option>Class of 2032</option>
           </select>
 
-          <label for="advisoryGroup">Advisory Group:</label>
+          <label>Advisory Group:</label>
           <select id="advisoryGroup">
             <option value="">-- Select Advisory Group --</option>
             <option>Group A</option>
@@ -98,7 +100,7 @@
             <option>Group C</option>
           </select>
 
-          <label for="teacher">Subject/Teacher:</label>
+          <label>Subject/Teacher:</label>
           <select id="teacher">
             <option value="">-- Select Teacher --</option>
             <option>Mr. Ott</option>
@@ -106,7 +108,6 @@
             <option>Ms. Tanner</option>
           </select>
         </form>
-
         <button onclick="validateStudentForm()">Continue</button>
       </section>
 
@@ -121,11 +122,11 @@
           <label for="commCheckbox">Communication</label>
           <div class="dropdown" id="commClusters" style="display:none;">
             <label>
-              <input type="checkbox" name="cluster" value="Exchanging thoughts, messages, and information effectively" />
+              <input type="checkbox" name="cluster" value="Exchanging thoughts, messages, and information effectively"/>
               Exchanging thoughts, messages, and information effectively
             </label>
             <label>
-              <input type="checkbox" name="cluster" value="Demonstrating communication through language" />
+              <input type="checkbox" name="cluster" value="Demonstrating communication through language"/>
               Demonstrating communication through language
             </label>
           </div>
@@ -136,7 +137,7 @@
           <input type="checkbox" id="socialCheckbox" onclick="toggleDropdown('socialClusters')" />
           <label for="socialCheckbox">Social</label>
           <div class="dropdown" id="socialClusters" style="display:none;">
-            <label><input type="checkbox" name="cluster" value="Collaboration skills" />Collaboration skills</label>
+            <label><input type="checkbox" name="cluster" value="Collaboration skills"/>Collaboration skills</label>
           </div>
         </div>
 
@@ -145,60 +146,11 @@
           <input type="checkbox" id="selfMgmtCheckbox" onclick="toggleDropdown('selfMgmtClusters')" />
           <label for="selfMgmtCheckbox">Self-Management</label>
           <div class="dropdown" id="selfMgmtClusters" style="display:none;">
-            <label><input type="checkbox" name="cluster" value="Organization skills" />Organization skills</label>
-            <label><input type="checkbox" name="cluster" value="Affective skills" />Affective skills</label>
-            <label><input type="checkbox" name="cluster" value="Reflection skills" />Reflection skills</label>
+            <label><input type="checkbox" name="cluster" value="Organization skills"/>Organization skills</label>
+            <label><input type="checkbox" name="cluster" value="Affective skills"/>Affective skills</label>
+            <label><input type="checkbox" name="cluster" value="Reflection skills"/>Reflection skills</label>
           </div>
         </div>
 
         <!-- Research -->
-        <div class="categoryRow">
-          <input type="checkbox" id="researchCheckbox" onclick="toggleDropdown('researchClusters')" />
-          <label for="researchCheckbox">Research</label>
-          <div class="dropdown" id="researchClusters" style="display:none;">
-            <label><input type="checkbox" name="cluster" value="Information literacy skills" />Information literacy skills</label>
-            <label><input type="checkbox" name="cluster" value="Media literacy skills" />Media literacy skills</label>
-          </div>
-        </div>
-
-        <!-- Thinking -->
-        <div class="categoryRow">
-          <input type="checkbox" id="thinkingCheckbox" onclick="toggleDropdown('thinkingClusters')" />
-          <label for="thinkingCheckbox">Thinking</label>
-          <div class="dropdown" id="thinkingClusters" style="display:none;">
-            <label><input type="checkbox" name="cluster" value="Critical-thinking skills" />Critical-thinking skills</label>
-            <label><input type="checkbox" name="cluster" value="Creative-thinking skills" />Creative-thinking skills</label>
-            <label><input type="checkbox" name="cluster" value="Transfer skills" />Transfer skills</label>
-          </div>
-        </div>
-
-        <button onclick="goToPage(2)">Next</button>
-      </section>
-
-      <!-- PAGE 2: Skills -->
-      <section id="page2" style="display:none;">
-        <h2>Select ATL Skills</h2>
-        <div id="skillsSelection"></div>
-        <button onclick="startSelfAssessment()">Start Self-Assessment</button>
-      </section>
-
-      <!-- PAGE 3: Self-Assessment (multi-step with 5 Qs per skill) -->
-      <section id="page3" style="display:none;">
-        <h2>Self-Assessment</h2>
-        <div id="selfAssessment"></div>
-        <div style="text-align:center; margin-top:20px;">
-          <button id="prevButton" onclick="navigateSkill(-1)" style="display:none;">Previous</button>
-          <button id="nextButton" onclick="navigateSkill(1)">Next</button>
-        </div>
-      </section>
-
-    </main>
-
-    <footer>
-      <p>&copy; 2024 PGIA. All rights reserved.</p>
-    </footer>
-  </div>
-
-  <script src="scripts.js"></script>
-</body>
-</html>
+        <div class="categoryRow"
