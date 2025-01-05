@@ -1,29 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>PGIA ATL Skills Self-Assessment</title>
-  <link rel="stylesheet" href="styles.css"/>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
   <div class="container">
-
-    <!-- TOP HEADER WITH 2 LOGOS (replace src with your actual images) -->
+    <!-- HEADER WITH LEFT & RIGHT LOGOS -->
     <header>
       <div class="header-logos">
-        <img src="viMontessoriLogo.png" alt="VI Montessori School Logo" class="logo-left"/>
-        <img src="ibLogo.png" alt="IB Logo" class="logo-right"/>
+        <!-- Replace src with actual images/URLs -->
+        <img src="viMontessoriLogo.png" alt="VI Montessori School Logo" class="logo-left" />
+        <img src="ibLogo.png" alt="IB Logo" class="logo-right" />
       </div>
       <h1>Welcome to the PGIA ATL Skills Self-assessment</h1>
       <p>Please complete the following information to get started.</p>
     </header>
 
     <main>
+
       <!-- PAGE 0: Student Info -->
       <section id="page0">
         <form id="studentForm" onsubmit="return false;">
+
           <label for="studentID">Student ID (required):</label>
           <input type="text" id="studentID" required />
 
@@ -39,72 +41,65 @@
           <label for="gradeLevel">Grade Level:</label>
           <select id="gradeLevel">
             <option value="">-- Select Grade --</option>
-            <option value="Grade 6">Grade 6</option>
-            <option value="Grade 7">Grade 7</option>
-            <option value="Grade 8">Grade 8</option>
-            <option value="Grade 9">Grade 9</option>
-            <option value="Grade 10">Grade 10</option>
-            <option value="Grade 11">Grade 11</option>
-            <option value="Grade 12">Grade 12</option>
+            <option>Grade 6</option><option>Grade 7</option>
+            <option>Grade 8</option><option>Grade 9</option>
+            <option>Grade 10</option><option>Grade 11</option>
+            <option>Grade 12</option>
           </select>
 
           <label for="classField">Class (Subject):</label>
           <select id="classField">
             <option value="">-- Select Class --</option>
-            <option value="English">English</option>
-            <option value="Spanish B">Spanish B</option>
-            <option value="Spanish ab initio">Spanish ab initio</option>
-            <option value="Spanish Phase 1">Spanish Phase 1</option>
-            <option value="Spanish Phase 2">Spanish Phase 2</option>
-            <option value="Spanish Phase 3">Spanish Phase 3</option>
-            <option value="Spanish Phase 4">Spanish Phase 4</option>
-            <option value="Spanish Phase 5/6">Spanish Phase 5/6</option>
-            <option value="Individuals and Societies">Individuals and Societies</option>
-            <option value="Computer Science">Computer Science</option>
-            <option value="Science">Science</option>
-            <option value="Physics">Physics</option>
-            <option value="Biology">Biology</option>
-            <option value="Chemistry">Chemistry</option>
-            <option value="G6 Math">G6 Math</option>
-            <option value="G7 Math">G7 Math</option>
-            <option value="Algebra 1">Algebra 1</option>
-            <option value="Geometry">Geometry</option>
-            <option value="Algebra 2">Algebra 2</option>
-            <option value="Applications and Interpretations">Applications and Interpretations</option>
-            <option value="Dance">Dance</option>
-            <option value="Music">Music</option>
-            <option value="Theater">Theater</option>
-            <option value="Visual Art">Visual Art</option>
-            <option value="PE">PE</option>
+            <option>English</option>
+            <option>Spanish B</option>
+            <option>Spanish ab initio</option>
+            <option>Spanish Phase 1</option>
+            <option>Spanish Phase 2</option>
+            <option>Spanish Phase 3</option>
+            <option>Spanish Phase 4</option>
+            <option>Spanish Phase 5/6</option>
+            <option>Individuals and Societies</option>
+            <option>Computer Science</option>
+            <option>Science</option>
+            <option>Physics</option>
+            <option>Biology</option>
+            <option>Chemistry</option>
+            <option>G6 Math</option>
+            <option>G7 Math</option>
+            <option>Algebra 1</option>
+            <option>Geometry</option>
+            <option>Algebra 2</option>
+            <option>Applications and Interpretations</option>
+            <option>Dance</option>
+            <option>Music</option>
+            <option>Theater</option>
+            <option>Visual Art</option>
+            <option>PE</option>
           </select>
 
           <label for="cohortYear">Cohort Year:</label>
           <select id="cohortYear">
             <option value="">-- Select Cohort --</option>
-            <option value="Class of 2025">Class of 2025</option>
-            <option value="Class of 2026">Class of 2026</option>
-            <option value="Class of 2027">Class of 2027</option>
-            <option value="Class of 2028">Class of 2028</option>
-            <option value="Class of 2029">Class of 2029</option>
-            <option value="Class of 2030">Class of 2030</option>
-            <option value="Class of 2031">Class of 2031</option>
-            <option value="Class of 2032">Class of 2032</option>
+            <option>Class of 2025</option><option>Class of 2026</option>
+            <option>Class of 2027</option><option>Class of 2028</option>
+            <option>Class of 2029</option><option>Class of 2030</option>
+            <option>Class of 2031</option><option>Class of 2032</option>
           </select>
 
           <label for="advisoryGroup">Advisory Group:</label>
           <select id="advisoryGroup">
             <option value="">-- Select Advisory Group --</option>
-            <option value="Group A">Group A</option>
-            <option value="Group B">Group B</option>
-            <option value="Group C">Group C</option>
+            <option>Group A</option>
+            <option>Group B</option>
+            <option>Group C</option>
           </select>
 
           <label for="teacher">Subject/Teacher:</label>
           <select id="teacher">
             <option value="">-- Select Teacher --</option>
-            <option value="Mr. Ott">Mr. Ott</option>
-            <option value="Mr. McCormick">Mr. McCormick</option>
-            <option value="Ms. Tanner">Ms. Tanner</option>
+            <option>Mr. Ott</option>
+            <option>Mr. McCormick</option>
+            <option>Ms. Tanner</option>
           </select>
         </form>
 
@@ -117,7 +112,7 @@
         <p>Select the skill categories and clusters you worked on in this unit.</p>
 
         <!-- Communication -->
-        <div class="category">
+        <div class="categoryRow">
           <input type="checkbox" id="commCheckbox" onclick="toggleDropdown('commClusters')" />
           <label for="commCheckbox">Communication</label>
           <div class="dropdown" id="commClusters" style="display:none;">
@@ -133,70 +128,43 @@
         </div>
 
         <!-- Social -->
-        <div class="category">
+        <div class="categoryRow">
           <input type="checkbox" id="socialCheckbox" onclick="toggleDropdown('socialClusters')" />
           <label for="socialCheckbox">Social</label>
           <div class="dropdown" id="socialClusters" style="display:none;">
-            <label>
-              <input type="checkbox" name="cluster" value="Collaboration skills" />
-              Collaboration skills
-            </label>
+            <label><input type="checkbox" name="cluster" value="Collaboration skills" />Collaboration skills</label>
           </div>
         </div>
 
         <!-- Self-Management -->
-        <div class="category">
+        <div class="categoryRow">
           <input type="checkbox" id="selfMgmtCheckbox" onclick="toggleDropdown('selfMgmtClusters')" />
           <label for="selfMgmtCheckbox">Self-Management</label>
           <div class="dropdown" id="selfMgmtClusters" style="display:none;">
-            <label>
-              <input type="checkbox" name="cluster" value="Organization skills" />
-              Organization skills
-            </label>
-            <label>
-              <input type="checkbox" name="cluster" value="Affective skills" />
-              Affective skills
-            </label>
-            <label>
-              <input type="checkbox" name="cluster" value="Reflection skills" />
-              Reflection skills
-            </label>
+            <label><input type="checkbox" name="cluster" value="Organization skills" />Organization skills</label>
+            <label><input type="checkbox" name="cluster" value="Affective skills" />Affective skills</label>
+            <label><input type="checkbox" name="cluster" value="Reflection skills" />Reflection skills</label>
           </div>
         </div>
 
         <!-- Research -->
-        <div class="category">
+        <div class="categoryRow">
           <input type="checkbox" id="researchCheckbox" onclick="toggleDropdown('researchClusters')" />
           <label for="researchCheckbox">Research</label>
           <div class="dropdown" id="researchClusters" style="display:none;">
-            <label>
-              <input type="checkbox" name="cluster" value="Information literacy skills" />
-              Information literacy skills
-            </label>
-            <label>
-              <input type="checkbox" name="cluster" value="Media literacy skills" />
-              Media literacy skills
-            </label>
+            <label><input type="checkbox" name="cluster" value="Information literacy skills" />Information literacy skills</label>
+            <label><input type="checkbox" name="cluster" value="Media literacy skills" />Media literacy skills</label>
           </div>
         </div>
 
         <!-- Thinking -->
-        <div class="category">
+        <div class="categoryRow">
           <input type="checkbox" id="thinkingCheckbox" onclick="toggleDropdown('thinkingClusters')" />
           <label for="thinkingCheckbox">Thinking</label>
           <div class="dropdown" id="thinkingClusters" style="display:none;">
-            <label>
-              <input type="checkbox" name="cluster" value="Critical-thinking skills" />
-              Critical-thinking skills
-            </label>
-            <label>
-              <input type="checkbox" name="cluster" value="Creative-thinking skills" />
-              Creative-thinking skills
-            </label>
-            <label>
-              <input type="checkbox" name="cluster" value="Transfer skills" />
-              Transfer skills
-            </label>
+            <label><input type="checkbox" name="cluster" value="Critical-thinking skills" />Critical-thinking skills</label>
+            <label><input type="checkbox" name="cluster" value="Creative-thinking skills" />Creative-thinking skills</label>
+            <label><input type="checkbox" name="cluster" value="Transfer skills" />Transfer skills</label>
           </div>
         </div>
 
@@ -210,7 +178,7 @@
         <button onclick="startSelfAssessment()">Start Self-Assessment</button>
       </section>
 
-      <!-- PAGE 3: Self-Assessment (placeholder) -->
+      <!-- PAGE 3: Self-Assessment with multi-step questions -->
       <section id="page3" style="display:none;">
         <h2>Self-Assessment</h2>
         <div id="selfAssessment"></div>
@@ -225,6 +193,7 @@
     <footer>
       <p>&copy; 2024 PGIA. All rights reserved.</p>
     </footer>
+
   </div>
 
   <script src="scripts.js"></script>
