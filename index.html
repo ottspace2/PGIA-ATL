@@ -9,23 +9,20 @@
 <body>
 
   <div class="container">
-    <!-- HEADER WITH LEFT & RIGHT LOGOS -->
+    <!-- TOP HEADER WITH 2 LOGOS (replace src with your actual images) -->
     <header>
       <div class="header-logos">
-        <!-- Replace src with actual images/URLs -->
-        <img src="viMontessoriLogo.png" alt="VI Montessori School Logo" class="logo-left" />
-        <img src="ibLogo.png" alt="IB Logo" class="logo-right" />
+        <img src="viMontessoriLogo.png" alt="VI Montessori School Logo" class="logo-left"/>
+        <img src="ibLogo.png" alt="IB Logo" class="logo-right"/>
       </div>
       <h1>Welcome to the PGIA ATL Skills Self-assessment</h1>
       <p>Please complete the following information to get started.</p>
     </header>
 
     <main>
-
       <!-- PAGE 0: Student Info -->
       <section id="page0">
         <form id="studentForm" onsubmit="return false;">
-
           <label for="studentID">Student ID (required):</label>
           <input type="text" id="studentID" required />
 
@@ -41,9 +38,12 @@
           <label for="gradeLevel">Grade Level:</label>
           <select id="gradeLevel">
             <option value="">-- Select Grade --</option>
-            <option>Grade 6</option><option>Grade 7</option>
-            <option>Grade 8</option><option>Grade 9</option>
-            <option>Grade 10</option><option>Grade 11</option>
+            <option>Grade 6</option>
+            <option>Grade 7</option>
+            <option>Grade 8</option>
+            <option>Grade 9</option>
+            <option>Grade 10</option>
+            <option>Grade 11</option>
             <option>Grade 12</option>
           </select>
 
@@ -80,10 +80,14 @@
           <label for="cohortYear">Cohort Year:</label>
           <select id="cohortYear">
             <option value="">-- Select Cohort --</option>
-            <option>Class of 2025</option><option>Class of 2026</option>
-            <option>Class of 2027</option><option>Class of 2028</option>
-            <option>Class of 2029</option><option>Class of 2030</option>
-            <option>Class of 2031</option><option>Class of 2032</option>
+            <option>Class of 2025</option>
+            <option>Class of 2026</option>
+            <option>Class of 2027</option>
+            <option>Class of 2028</option>
+            <option>Class of 2029</option>
+            <option>Class of 2030</option>
+            <option>Class of 2031</option>
+            <option>Class of 2032</option>
           </select>
 
           <label for="advisoryGroup">Advisory Group:</label>
@@ -106,7 +110,7 @@
         <button onclick="validateStudentForm()">Continue</button>
       </section>
 
-      <!-- PAGE 1: Category & Clusters -->
+      <!-- PAGE 1: Categories & Clusters -->
       <section id="page1" style="display:none;">
         <h2>Select Categories and Clusters</h2>
         <p>Select the skill categories and clusters you worked on in this unit.</p>
@@ -178,7 +182,7 @@
         <button onclick="startSelfAssessment()">Start Self-Assessment</button>
       </section>
 
-      <!-- PAGE 3: Self-Assessment with multi-step questions -->
+      <!-- PAGE 3: Self-Assessment (multi-step with 5 Qs per skill) -->
       <section id="page3" style="display:none;">
         <h2>Self-Assessment</h2>
         <div id="selfAssessment"></div>
@@ -193,7 +197,6 @@
     <footer>
       <p>&copy; 2024 PGIA. All rights reserved.</p>
     </footer>
-
   </div>
 
   <script src="scripts.js"></script>
