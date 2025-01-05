@@ -372,9 +372,9 @@ function renderAssessmentQuestion(qIndex){
   container.appendChild(skillContainer);
 
   // Title
-  const h2 = document.createElement("h3");
-  h2.textContent = `ATL Skill: ${skill}`;
-  skillContainer.appendChild(h2);
+  const h3 = document.createElement("h3");
+  h3.textContent = `ATL Skill: ${skill}`;
+  skillContainer.appendChild(h3);
 
   // Question
   const p = document.createElement("p");
@@ -441,6 +441,7 @@ function showLikertQuestion(container, skillIndex, skill){
     radio.type = "radio";
     radio.name = `Q1-skill${skillIndex}`;
     radio.value = opt.value;
+    radio.required = true; // Ensure selection
     col.appendChild(radio);
 
     const belowLabel = document.createElement("div");
@@ -470,7 +471,7 @@ function showProficiencyQuestion(container, skillIndex, skill){
 
   proficiencyLevelsOrdered.forEach(level => {
     const label = document.createElement("label");
-    label.innerHTML = `<input type="radio" name="Q2-skill${skillIndex}" value="${level}"> ${proficiencyStatements[skill][level]}`;
+    label.innerHTML = `<input type="radio" name="Q2-skill${skillIndex}" value="${level}" required> ${proficiencyStatements[skill][level]}`;
     opsDiv.appendChild(label);
   });
 
@@ -485,6 +486,7 @@ function showShortResponseQ3(container, skillIndex, skill){
   ta.name = `Q3-skill${skillIndex}`;
   ta.rows = 4;
   ta.placeholder = "Describe your experience...";
+  ta.required = true; // Ensure response
   container.appendChild(ta);
 }
 
@@ -496,6 +498,7 @@ function showShortResponseQ4(container, skillIndex, skill){
   ta.name = `Q4-skill${skillIndex}`;
   ta.rows = 4;
   ta.placeholder = "Describe the challenge and your solution...";
+  ta.required = true; // Ensure response
   container.appendChild(ta);
 }
 
@@ -531,7 +534,7 @@ function showIbLearnerProfileQ5(container, skillIndex, skill){
 }
 
 /**************************************************************
- * 14) NEXT/PREV
+ * 14) NEXT BUTTON NAVIGATION
  **************************************************************/
 function navigateSkill(){
   // Validate current question before proceeding
@@ -619,17 +622,7 @@ function saveCurrentResponse(){
 }
 
 /**************************************************************
- * 17) START SELF-ASSESSMENT
- **************************************************************/
-// Already implemented in event listener
-
-/**************************************************************
- * 18) RENDER ASSESSMENT QUESTION
- **************************************************************/
-// Already implemented in renderAssessmentQuestion
-
-/**************************************************************
- * 19) HANDLE FINAL SUBMIT => Post multiple rows (each skill)
+ * 17) HANDLE FINAL SUBMIT => Post multiple rows (each skill)
  **************************************************************/
 function handleFinalSubmit(){
   // Gather user info from page0
@@ -695,7 +688,7 @@ function handleFinalSubmit(){
 }
 
 /**************************************************************
- * 20) Submit row to Google Apps Script
+ * 18) SUBMIT ROW TO GOOGLE APPS SCRIPT
  **************************************************************/
 function submitDataForSkill(obj){
   const scriptUrl = "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec"; // Replace with your deployment URL
@@ -719,8 +712,24 @@ function submitDataForSkill(obj){
 }
 
 /**************************************************************
- * 21) RANDOM ARRAY PICK
+ * 19) RANDOM ARRAY PICK
  **************************************************************/
 function pickRandom(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
+}
+
+/**************************************************************
+ * 20) VALIDATE STUDENT FORM
+ **************************************************************/
+function validateStudentForm() {
+  const studentID = document.getElementById("studentID").value.trim();
+  const lastName  = document.getElementById("lastName").value.trim();
+  const firstName = document.getElementById("firstName").value.trim();
+
+  if(!studentID || !lastName || !firstName) {
+    alert("Please complete required fields: Student ID, Last Name, First Name.");
+    return;
+  }
+  // Switch to next page
+  goToPage(1);
 }
