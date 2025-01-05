@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>PGIA ATL Skills Self-Assessment</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
 
   <div class="container">
 
-    <!-- TOP HEADER WITH 2 LOGOS -->
+    <!-- TOP HEADER WITH 2 LOGOS (replace src with your actual images) -->
     <header>
       <div class="header-logos">
-        <img src="viMontessoriLogo.png" alt="VI Montessori School Logo" class="logo-left" />
-        <img src="ibLogo.png" alt="IB Logo" class="logo-right" />
+        <img src="viMontessoriLogo.png" alt="VI Montessori School Logo" class="logo-left"/>
+        <img src="ibLogo.png" alt="IB Logo" class="logo-right"/>
       </div>
       <h1>Welcome to the PGIA ATL Skills Self-assessment</h1>
       <p>Please complete the following information to get started.</p>
@@ -34,7 +34,6 @@
           <input type="text" id="firstName" required />
 
           <label for="dateField">Date:</label>
-          <!-- The entire input is clickable in modern browsers for date selection -->
           <input type="date" id="dateField" />
 
           <label for="gradeLevel">Grade Level:</label>
@@ -113,7 +112,7 @@
       </section>
 
       <!-- PAGE 1: Category & Clusters -->
-      <section id="page1" style="display: none;">
+      <section id="page1" style="display:none;">
         <h2>Select Categories and Clusters</h2>
         <p>Select the skill categories and clusters you worked on in this unit.</p>
 
@@ -205,13 +204,13 @@
       </section>
 
       <!-- PAGE 2: Skills -->
-      <section id="page2" style="display: none;">
+      <section id="page2" style="display:none;">
         <h2>Select ATL Skills</h2>
         <div id="skillsSelection"></div>
         <button onclick="startSelfAssessment()">Start Self-Assessment</button>
       </section>
 
-      <!-- PAGE 3: Self-Assessment (Multi Q) -->
+      <!-- PAGE 3: Self-Assessment (placeholder) -->
       <section id="page3" style="display:none;">
         <h2>Self-Assessment</h2>
         <div id="selfAssessment"></div>
@@ -220,6 +219,7 @@
           <button id="nextButton" onclick="navigateSkill(1)">Next</button>
         </div>
       </section>
+
     </main>
 
     <footer>
