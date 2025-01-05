@@ -53,6 +53,7 @@ textarea {
   box-sizing:border-box;
 }
 
+/* Category row on Page 1 */
 .categoryRow {
   margin:10px 0;
   display:flex;
@@ -71,7 +72,7 @@ textarea {
   border-left:2px solid #ddd;
 }
 
-/* For PAGE2 skill checkboxes side by side or stacked as needed */
+/* Page 2 skill checkboxes side by side */
 #skillsSelection label {
   display:inline-flex;
   align-items:center;
