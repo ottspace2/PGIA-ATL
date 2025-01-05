@@ -1,17 +1,32 @@
+/* Root Variables for Consistency */
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #0056b3;
+  --background-color: #f9f9f9;
+  --container-bg: #ffffff;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  --font-family: 'Arial', sans-serif;
+  --font-weight-bold: bold;
+  --transition-duration: 0.3s;
+}
+
+/* Base Styles */
 body {
-  font-family: Arial, sans-serif;
+  font-family: var(--font-family);
+  background-color: var(--background-color);
   margin: 0;
   padding: 0;
-  background-color: #f9f9f9;
+  line-height: 1.6;
 }
 
 .container {
   max-width: 800px;
   margin: 20px auto;
   padding: 20px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background: var(--container-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
 }
 
 .header-logos {
@@ -20,34 +35,60 @@ body {
   align-items: center;
   margin-bottom: 10px;
 }
-.logo-left {
+
+.logo-left, .logo-right {
   width: 100px;
   height: auto;
 }
-.logo-right {
-  width: 80px;
-  height: auto;
+
+@media (max-width: 600px) {
+  .header-logos {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .logo-left {
+    width: 80px;
+  }
+  
+  .logo-right {
+    width: 60px;
+  }
 }
 
 header, footer {
   text-align: center;
 }
 
-h2 {
+h1, h2 {
   margin-bottom: 20px;
 }
 
-/* The row for categories on Page 1 */
+h2 {
+  margin-top: 0;
+}
+
+/* Hidden Class */
+.hidden {
+  display: none;
+}
+
+/* Category Rows */
 .categoryRow {
   margin: 10px 0;
   display: flex;
   align-items: center;
 }
+
 .categoryRow input[type="checkbox"] {
   margin-right: 10px;
 }
 
-/* The dropdown for clusters */
+.categoryRow label {
+  font-weight: var(--font-weight-bold);
+}
+
+/* Dropdowns */
 .dropdown {
   margin-top: 10px;
   padding-left: 20px;
@@ -55,15 +96,24 @@ h2 {
   flex-direction: column;
   gap: 5px;
   border-left: 2px solid #ddd;
+  transition: max-height var(--transition-duration) ease, opacity var(--transition-duration) ease;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
 }
 
+.dropdown.show {
+  max-height: 1000px; /* Arbitrary large value to accommodate content */
+  opacity: 1;
+}
+
+/* Labels and Inputs */
 label {
   display: block;
   margin: 10px 0 5px;
-  font-weight: bold;
+  font-weight: var(--font-weight-bold);
 }
 
-/* For text/inputs on landing page */
 input[type="text"],
 input[type="date"],
 select,
@@ -72,35 +122,115 @@ textarea {
   padding: 8px;
   margin-bottom: 15px;
   box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color var(--transition-duration) ease;
 }
 
+input[type="text"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+input:invalid {
+  border-color: red;
+}
+
+::placeholder {
+  color: #aaa;
+}
+
+/* Skills Selection */
 #skillsSelection label {
-  display: inline-flex;
-  align-items: center;
-  margin-right: 10px;
+  display: block;
   margin-bottom: 5px;
 }
 
+#skillsSelection .skill-category {
+  margin-bottom: 15px;
+}
+
+#skillsSelection .skill-category h3 {
+  margin-bottom: 10px;
+}
+
+/* Buttons */
 button {
   display: block;
   margin: 20px auto;
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: var(--primary-color);
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-}
-button:hover {
-  background-color: #0056b3;
+  transition: background-color var(--transition-duration) ease;
 }
 
-/* Self-assessment styling */
+button:hover {
+  background-color: var(--secondary-color);
+}
+
+button:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+button:active {
+  background-color: #004494;
+}
+
+/* Self-Assessment Styling */
 .question {
   margin: 20px 0;
 }
+
 .options {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.options label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.options input[type="radio"],
+.options input[type="checkbox"] {
+  margin-right: 10px;
+  transform: scale(1.2);
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* Likert Scale */
+.scaleDiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 20px;
+}
+
+.scaleCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.scaleCol div {
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+/* Responsive Skills Stacking on Page 3 */
+#selfAssessment .skill-container {
+  margin-bottom: 30px;
 }
