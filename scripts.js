@@ -1,5 +1,5 @@
 /**************************************************************
- * 0) STUDENT FORM VALIDATION (LANDING PAGE)
+ * 0) LANDING PAGE VALIDATION
  **************************************************************/
 function validateStudentForm() {
   const studentID = document.getElementById("studentID").value.trim();
@@ -7,14 +7,15 @@ function validateStudentForm() {
   const firstName = document.getElementById("firstName").value.trim();
 
   if(!studentID || !lastName || !firstName) {
-    alert("Please complete the required fields: Student ID, Last Name, First Name.");
+    alert("Please complete required fields: Student ID, Last Name, First Name.");
     return;
   }
+  // Switch to next page
   goToPage(1);
 }
 
 /**************************************************************
- * 1) FULL CATEGORIES, CLUSTERS, & SKILLS
+ * 1) FULL LIST of CATEGORIES & SKILLS from PDF
  **************************************************************/
 const categoriesAndSkills = {
   Communication: {
@@ -145,26 +146,55 @@ const categoriesAndSkills = {
   Thinking: {
     "Critical-thinking skills": [
       "Practise observing carefully to recognize problems",
-      // ...
+      "Gather and organize relevant information to formulate an argument",
+      "Recognize unstated assumptions and bias",
+      "Interpret data",
+      "Recognize and evaluate propositions",
+      "Evaluate evidence and arguments",
+      "Draw reasonable conclusions and generalizations",
+      "Test generalizations and conclusions",
+      "Revise understanding based on new information and evidence",
+      "Evaluate and manage risk",
+      "Formulate factual, topical, conceptual, and debatable questions",
+      "Consider ideas from multiple perspectives",
+      "Develop contrary or opposing arguments",
+      "Analyze complex concepts and projects into their constituent parts and synthesize them to create new understanding",
+      "Propose and evaluate a variety of solutions",
+      "Identify obstacles and challenges",
+      "Use models and simulations to explore complex systems and issues",
+      "Identify trends and forecast possibilities",
       "Troubleshoot systems and applications"
     ],
     "Creative-thinking skills": [
       "Use brainstorming and visual diagrams to generate new ideas and inquiries",
-      // ...
+      "Consider multiple alternatives, including those that might be unlikely or impossible",
+      "Create novel solutions to authentic problems",
+      "Make unexpected or unusual connections between objects and/or ideas",
+      "Design improvements to existing machines, media, and technologies",
+      "Design new machines, media, and technologies",
+      "Practise flexible thinking—develop multiple opposing, contradictory, and complementary arguments",
+      "Practise visible thinking strategies and techniques",
+      "Generate metaphors and analogies",
+      "Apply existing knowledge to generate new ideas, products, or processes",
+      "Make guesses, ask “what if” questions, and generate testable hypotheses",
       "Practise innovation and entrepreneurship"
     ],
     "Transfer skills": [
       "Use effective learning strategies in subject groups and disciplines",
-      // ...
+      "Apply skills and knowledge in unfamiliar situations",
+      "Inquire in different contexts to gain a different perspective",
+      "Compare conceptual understanding across multiple subject groups and disciplines",
+      "Make connections between subject groups and disciplines",
+      "Combine knowledge, understanding, and skills to create products or solutions",
+      "Transfer current knowledge to learning of new technologies",
       "Change the context of an inquiry to gain different perspectives"
     ]
   }
 };
 
 /**************************************************************
- * 2) 5-QUESTION LOGIC
+ * 2) Q2 => "I CAN" statements for a random single statement
  **************************************************************/
-// Q2: "I can" statements (random pick from each proficiency level)
 const proficiencyLevels = {
   "Novice/Beginning (Observation)": [
     "I can recognize and describe how this skill is used by others.",
@@ -192,104 +222,72 @@ const proficiencyLevels = {
   ]
 };
 
-// For question #5 => IB Learner traits
+// IB Learner traits
 const ibLearnerTraits = [
-  {
-    trait: "Inquirer",
-    example: "I demonstrated being an inquirer by using research skills to locate, analyze, and synthesize information for a group project."
-  },
-  {
-    trait: "Knowledgeable",
-    example: "I was knowledgeable when I applied discipline-specific terms effectively while presenting a mathematical solution."
-  },
-  {
-    trait: "Thinker",
-    example: "I showed myself as a thinker by using critical-thinking skills to evaluate evidence and draw a reasoned conclusion in a debate."
-  },
-  {
-    trait: "Communicator",
-    example: "I embodied the role of a communicator by practicing intercultural understanding to collaborate with peers from different backgrounds."
-  },
-  {
-    trait: "Principled",
-    example: "I demonstrated being principled by taking responsibility for meeting deadlines and following through on commitments to my group."
-  },
-  {
-    trait: "Open-minded",
-    example: "I showed open-mindedness by actively listening to different perspectives during a collaborative problem-solving activity."
-  },
-  {
-    trait: "Caring",
-    example: "I was caring by helping a classmate improve their understanding of a topic through constructive feedback."
-  },
-  {
-    trait: "Risk-Taker",
-    example: "I demonstrated being a risk-taker by trying a new approach to solving a problem or presenting a unique idea in a group discussion."
-  },
-  {
-    trait: "Balanced",
-    example: "I showed balance by managing my time effectively to complete assignments while maintaining my personal well-being."
-  },
-  {
-    trait: "Reflective",
-    example: "I was reflective by considering the strengths and weaknesses of my personal strategies during a group presentation."
-  }
+  { trait:"Inquirer",example:"I demonstrated being an inquirer by using research skills..." },
+  { trait:"Knowledgeable",example:"I was knowledgeable when I applied discipline-specific terms..." },
+  { trait:"Thinker",example:"I showed myself as a thinker by using critical-thinking skills..." },
+  { trait:"Communicator",example:"I embodied the role of a communicator by practicing intercultural understanding..." },
+  { trait:"Principled",example:"I demonstrated being principled by taking responsibility..." },
+  { trait:"Open-minded",example:"I showed open-mindedness by actively listening..." },
+  { trait:"Caring",example:"I was caring by helping a classmate improve their understanding..." },
+  { trait:"Risk-Taker",example:"I demonstrated being a risk-taker by trying a new approach..." },
+  { trait:"Balanced",example:"I showed balance by managing my time effectively..." },
+  { trait:"Reflective",example:"I was reflective by considering the strengths and weaknesses..." }
 ];
 
-// Helper function to get a random item from an array
+// Random array pick
 function pickRandom(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
+  return arr[Math.floor(Math.random()* arr.length)];
 }
 
 /**************************************************************
- * 3) GLOBAL STATE
+ * 3) GLOBAL
  **************************************************************/
-let selectedSkills = [];
-let totalQuestions = 0;
-let currentQuestionIndex = 0;
+let selectedSkills=[];
+let totalQuestions=0;
+let currentQuestionIndex=0;
 
 /**************************************************************
- * 4) CATEGORY PAGE -> toggleDropdown
+ * 4) TOGGLE DROPDOWN
  **************************************************************/
-function toggleDropdown(id) {
-  const dd = document.getElementById(id);
+function toggleDropdown(id){
+  const dd= document.getElementById(id);
   if(!dd) return;
-  dd.style.display = (dd.style.display==="none")?"block":"none";
+  dd.style.display=(dd.style.display==="none")?"block":"none";
 }
 
 /**************************************************************
- * 5) NAVIGATE
+ * 5) PAGE NAV
  **************************************************************/
-function goToPage(pageNumber) {
-  document.querySelectorAll("section").forEach(sec => (sec.style.display = "none"));
-  document.getElementById(`page${pageNumber}`).style.display="block";
+function goToPage(num){
+  document.querySelectorAll("section").forEach(sec=>sec.style.display="none");
+  document.getElementById(`page${num}`).style.display="block";
 
-  if(pageNumber===2) {
-    populateSkillsSelection();
-  }
+  if(num===2) populateSkillsSelection();
 }
 
 /**************************************************************
- * 6) POPULATE SKILLS (PAGE2)
+ * 6) POPULATE SKILLS => PAGE2
  **************************************************************/
-function populateSkillsSelection() {
-  const selectedClusters = Array.from(
+function populateSkillsSelection(){
+  const clustersChosen= Array.from(
     document.querySelectorAll('input[name="cluster"]:checked')
-  ).map(i => i.value);
+  ).map(i=> i.value);
 
-  const skillsDiv = document.getElementById("skillsSelection");
-  skillsDiv.innerHTML = "";
+  const skillsDiv= document.getElementById("skillsSelection");
+  skillsDiv.innerHTML="";
 
-  selectedClusters.forEach(cluster => {
-    Object.entries(categoriesAndSkills).forEach(([category, clusters])=> {
-      if(clusters[cluster]) {
-        const catDiv = document.createElement("div");
-        catDiv.innerHTML = `<h3>${category} - ${cluster}</h3>`;
-
-        clusters[cluster].forEach(skill => {
-          const label = document.createElement("label");
+  clustersChosen.forEach(cluster=>{
+    // find cluster in categories
+    Object.entries(categoriesAndSkills).forEach(([cat, clusters])=>{
+      if(clusters[cluster]){
+        const catDiv= document.createElement("div");
+        catDiv.innerHTML= `<h3>${cat} - ${cluster}</h3>`;
+        clusters[cluster].forEach(skill=>{
+          const label= document.createElement("label");
           label.style.display="inline-flex";
-          label.innerHTML = `<input type="checkbox" name="skill" value="${skill}"> ${skill}`;
+          label.innerHTML= `<input type="checkbox" name="skill" value="${skill}"> ${skill}`;
           catDiv.appendChild(label);
         });
         skillsDiv.appendChild(catDiv);
@@ -301,18 +299,18 @@ function populateSkillsSelection() {
 /**************************************************************
  * 7) START SELF-ASSESSMENT => PAGE3
  **************************************************************/
-function startSelfAssessment() {
-  selectedSkills = Array.from(
+function startSelfAssessment(){
+  selectedSkills= Array.from(
     document.querySelectorAll('input[name="skill"]:checked')
-  ).map(i => i.value);
+  ).map(i=> i.value);
 
-  if(selectedSkills.length===0){
+  if(!selectedSkills.length){
     alert("Please select at least one skill before starting the self-assessment.");
     return;
   }
 
   // 5 questions per skill
-  totalQuestions = selectedSkills.length * 5;
+  totalQuestions= selectedSkills.length*5;
   currentQuestionIndex=0;
 
   goToPage(3);
@@ -320,11 +318,11 @@ function startSelfAssessment() {
 }
 
 /**************************************************************
- * 8) RENDER SINGLE QUESTION
+ * 8) RENDER SINGLE Q
  **************************************************************/
-function renderAssessmentQuestion(qIndex) {
-  const skillIndex = Math.floor(qIndex / 5);
-  const questionNum= qIndex % 5; // 0..4
+function renderAssessmentQuestion(qIndex){
+  const skillIndex= Math.floor(qIndex/5);
+  const questionNum= qIndex%5;
   const skill= selectedSkills[skillIndex];
 
   const container= document.getElementById("selfAssessment");
@@ -335,40 +333,25 @@ function renderAssessmentQuestion(qIndex) {
   h2.textContent= `ATL Skill: ${skill}`;
   container.appendChild(h2);
 
-  // Which of 5 Q?
   switch(questionNum){
-    case 0:
-      showLikertQuestion(container, skillIndex, skill);
-      break;
-    case 1:
-      showProficiencyQuestion(container, skillIndex, skill);
-      break;
-    case 2:
-      showShortResponseQ3(container, skillIndex, skill);
-      break;
-    case 3:
-      showShortResponseQ4(container, skillIndex, skill);
-      break;
-    case 4:
-      showIbLearnerProfileQ5(container, skillIndex, skill);
-      break;
+    case 0: showLikertQuestion(container, skillIndex, skill); break;
+    case 1: showProficiencyQuestion(container, skillIndex, skill); break;
+    case 2: showShortResponseQ3(container, skillIndex, skill); break;
+    case 3: showShortResponseQ4(container, skillIndex, skill); break;
+    case 4: showIbLearnerProfileQ5(container, skillIndex, skill); break;
   }
 
-  // Prev / Next or Submit
-  const prevBtn= document.getElementById("prevButton");
-  const nextBtn= document.getElementById("nextButton");
-
-  prevBtn.style.display= (qIndex>0)? "inline-block":"none";
-  nextBtn.textContent= (qIndex< totalQuestions-1)? "Next":"Submit";
+  document.getElementById("prevButton").style.display=(qIndex>0)? "inline-block":"none";
+  document.getElementById("nextButton").textContent=(qIndex< totalQuestions-1)? "Next":"Submit";
 }
 
 /**************************************************************
- * 9) Q1: LIKERT
+ * 9) Q1 => LIKERT
  **************************************************************/
 function showLikertQuestion(container, skillIndex, skill){
   const p= document.createElement("p");
   p.className="question";
-  p.textContent = `At the start of this unit, I would describe my ability to "${skill}" as...`;
+  p.textContent=`At the start of this unit, I would describe my ability to "${skill}" as...`;
   container.appendChild(p);
 
   const scaleDiv= document.createElement("div");
@@ -379,10 +362,10 @@ function showLikertQuestion(container, skillIndex, skill){
   scaleDiv.style.marginTop="20px";
 
   const scaleOpts=[
-    {value:"1", label:"Beginner"},
-    {value:"2", label:"Learner"},
-    {value:"3", label:"Practitioner"},
-    {value:"4", label:"Expert"}
+    {value:"1",label:"Beginner"},
+    {value:"2",label:"Learner"},
+    {value:"3",label:"Practitioner"},
+    {value:"4",label:"Expert"}
   ];
 
   scaleOpts.forEach(opt=>{
@@ -400,7 +383,7 @@ function showLikertQuestion(container, skillIndex, skill){
     const radio= document.createElement("input");
     radio.type="radio";
     radio.name=`Q1-skill${skillIndex}`;
-    radio.value=opt.value;
+    radio.value= opt.value;
     radio.style.marginBottom="4px";
     col.appendChild(radio);
 
@@ -415,89 +398,87 @@ function showLikertQuestion(container, skillIndex, skill){
 }
 
 /**************************************************************
- * 10) Q2: RANDOM SINGLE STATEMENT FROM PROFICIENCY
+ * 10) Q2 => RANDOM SINGLE STATEMENT from proficiency
  **************************************************************/
-function showProficiencyQuestion(container, skillIndex, skill) {
-  const prompt= document.createElement("p");
-  prompt.className="question";
-  prompt.textContent= `Reflecting on your progress this unit, select the statement that best applies to your current ability to "${skill}"...`;
-  container.appendChild(prompt);
+function showProficiencyQuestion(container, skillIndex, skill){
+  const p= document.createElement("p");
+  p.className="question";
+  p.textContent=`Reflecting on your progress this unit, select the statement that best applies to your current ability to "${skill}"...`;
+  container.appendChild(p);
 
   const opsDiv= document.createElement("div");
   opsDiv.className="options";
 
-  Object.entries(proficiencyLevels).forEach(([lvl, arr])=>{
-    // pick random statement
-    const randomStmt= arr[Math.floor(Math.random() * arr.length)];
-
+  Object.entries(proficiencyLevels).forEach(([lvl, statements])=>{
+    const randomStmt= pickRandom(statements);
     const label= document.createElement("label");
-    label.innerHTML= `<input type="radio" name="Q2-skill${skillIndex}" value="${lvl}"> ${randomStmt}`;
+    label.innerHTML=`<input type="radio" name="Q2-skill${skillIndex}" value="${lvl}"> ${randomStmt}`;
     opsDiv.appendChild(label);
   });
+
   container.appendChild(opsDiv);
 }
 
 /**************************************************************
- * 11) Q3: SHORT RESPONSE #1
+ * 11) Q3 => SHORT RESP #1
  **************************************************************/
 function showShortResponseQ3(container, skillIndex, skill){
   const p= document.createElement("p");
   p.className="question";
-  p.textContent= `Describe one way I used ${skill} and what could I do to improve in the future?`;
+  p.textContent=`Describe one way I used ${skill} and what could I do to improve in the future?`;
   container.appendChild(p);
 
-  const textarea= document.createElement("textarea");
-  textarea.name= `Q3-skill${skillIndex}`;
-  textarea.rows=4;
-  textarea.style.width="100%";
-  container.appendChild(textarea);
+  const ta= document.createElement("textarea");
+  ta.name=`Q3-skill${skillIndex}`;
+  ta.rows=4;
+  ta.style.width="100%";
+  container.appendChild(ta);
 }
 
 /**************************************************************
- * 12) Q4: SHORT RESPONSE #2
+ * 12) Q4 => SHORT RESP #2
  **************************************************************/
 function showShortResponseQ4(container, skillIndex, skill){
   const p= document.createElement("p");
   p.className="question";
-  p.textContent= `What is one challenge you experienced related to ${skill}, and how did you overcome it?`;
+  p.textContent=`What is one challenge you experienced related to ${skill}, and how did you overcome it?`;
   container.appendChild(p);
 
-  const textarea= document.createElement("textarea");
-  textarea.name= `Q4-skill${skillIndex}`;
-  textarea.rows=4;
-  textarea.style.width="100%";
-  container.appendChild(textarea);
+  const ta= document.createElement("textarea");
+  ta.name=`Q4-skill${skillIndex}`;
+  ta.rows=4;
+  ta.style.width="100%";
+  container.appendChild(ta);
 }
 
 /**************************************************************
- * 13) Q5: IB LEARNER
+ * 13) Q5 => IB Learner trait
  **************************************************************/
-function showIbLearnerProfileQ5(container, skillIndex, skill) {
+function showIbLearnerProfileQ5(container, skillIndex, skill){
   const p= document.createElement("p");
   p.className="question";
-  p.textContent= `If someone were observing you practicing this skill, which IB learner profile trait would they say you demonstrated? Why?`;
+  p.textContent=`If someone were observing you practicing this skill, which IB learner profile trait would they say you demonstrated? Why?`;
   container.appendChild(p);
 
-  const sel= document.createElement("select");
-  sel.name=`Q5-select${skillIndex}`;
-  sel.style.display="block";
-  sel.style.marginBottom="10px";
+  const select= document.createElement("select");
+  select.name=`Q5-select${skillIndex}`;
+  select.style.display="block";
+  select.style.marginBottom="10px";
 
   const placeholder= document.createElement("option");
   placeholder.value="";
   placeholder.textContent="Select IB learner profile trait...";
   placeholder.disabled=true;
   placeholder.selected=true;
-  sel.appendChild(placeholder);
+  select.appendChild(placeholder);
 
-  // ibLearnerTraits array
   ibLearnerTraits.forEach(obj=>{
     const opt= document.createElement("option");
-    opt.value= obj.trait;
-    opt.textContent= `${obj.trait} (${obj.example})`;
-    sel.appendChild(opt);
+    opt.value=obj.trait;
+    opt.textContent=`${obj.trait} (${obj.example})`;
+    select.appendChild(opt);
   });
-  container.appendChild(sel);
+  container.appendChild(select);
 
   const ta= document.createElement("textarea");
   ta.name=`Q5-skill${skillIndex}`;
@@ -514,7 +495,7 @@ function navigateSkill(direction){
   currentQuestionIndex+= direction;
 
   if(currentQuestionIndex>= totalQuestions){
-    alert("Self-assessment submitted! Thank you.");
+    handleFinalSubmit();
     return;
   }
   if(currentQuestionIndex<0) currentQuestionIndex=0;
@@ -523,17 +504,99 @@ function navigateSkill(direction){
 }
 
 /**************************************************************
- * 15) (Optional) INTEGRATION => Google Apps Script
- * function handleFinalSubmit() { ... }
- * function submitData(obj) { ... }
+ * 15) handleFinalSubmit => Post multiple rows (each skill)
  **************************************************************/
+function handleFinalSubmit(){
+  // gather user info from page0
+  const studentID = document.getElementById("studentID").value.trim();
+  const lastName  = document.getElementById("lastName").value.trim();
+  const firstName = document.getElementById("firstName").value.trim();
+  const dateField = document.getElementById("dateField").value.trim();
+  const grade     = document.getElementById("gradeLevel").value.trim();
+  const className = document.getElementById("classField").value.trim();
+  const cohort    = document.getElementById("cohortYear").value.trim();
+  const advisory  = document.getElementById("advisoryGroup").value.trim();
+  const teacher   = document.getElementById("teacher").value.trim();
 
+  let skillIdx=0;
+  const tasks= selectedSkills.map(skill=>{
+    const Q1_name=`Q1-skill${skillIdx}`;
+    const Q2_name=`Q2-skill${skillIdx}`;
+    const Q3_name=`Q3-skill${skillIdx}`;
+    const Q4_name=`Q4-skill${skillIdx}`;
+    const Q5_sel=`Q5-select${skillIdx}`;
+    const Q5_txt=`Q5-skill${skillIdx}`;
 
-/** 
- *  The above code fully integrates:
- *   - 5 questions per skill
- *   - random single statement for Q2
- *   - short responses for Q3 & Q4
- *   - IB learner profile for Q5
- *  Expand to capture Q1..Q5 in a data object & send via `submitData`.
- */
+    skillIdx++;
+
+    // read answers
+    const Q1_val=(document.querySelector(`input[name="${Q1_name}"]:checked`)||{}).value||"";
+    const Q2_val=(document.querySelector(`input[name="${Q2_name}"]:checked`)||{}).value||"";
+    const Q3_val=(document.getElementsByName(Q3_name)[0]||{}).value||"";
+    const Q4_val=(document.getElementsByName(Q4_name)[0]||{}).value||"";
+    const Q5_sel_val=(document.getElementsByName(Q5_sel)[0]||{}).value||"";
+    const Q5_txt_val=(document.getElementsByName(Q5_txt)[0]||{}).value||"";
+
+    // find category & cluster from the skill
+    let foundCategory="";
+    let foundCluster="";
+    outer: for(const [cat, clusters] of Object.entries(categoriesAndSkills)){
+      for(const [cluName, skillArr] of Object.entries(clusters)){
+        if(skillArr.includes(skill)){
+          foundCategory=cat;
+          foundCluster=cluName;
+          break outer;
+        }
+      }
+    }
+
+    const dataObj={
+      studentID,
+      lastName,
+      firstName,
+      date: dateField,
+      gradeLevel: grade,
+      className,
+      cohortYear: cohort,
+      advisoryGroup: advisory,
+      teacher,
+      category: foundCategory,
+      cluster:foundCluster,
+      skill,
+      q1: Q1_val,
+      q2: Q2_val,
+      q3: Q3_val,
+      q4: Q4_val,
+      q5: `${Q5_sel_val} - ${Q5_txt_val}`
+    };
+    return submitDataForSkill(dataObj);
+  });
+
+  Promise.all(tasks)
+    .then(()=>{
+      alert("All self-assessments submitted successfully!");
+    })
+    .catch(err=>{
+      console.error("Error in final submission:", err);
+      alert("Error submitting data. See console for details.");
+    });
+}
+
+/**************************************************************
+ * 16) Submit row to Google Apps Script
+ **************************************************************/
+function submitDataForSkill(obj){
+  const scriptUrl="https://script.google.com/macros/s/AKfycbxac8wENzpyU03bIM2vFaF5hGPSG5aTumO9zo5agm_L4JHCu4xCyUsWA4hbbrKdUvwVKw/exec";
+
+  return fetch(scriptUrl, {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify(obj)
+  })
+  .then(r=>r.json())
+  .then(res=>{
+    if(res.status!=="success"){
+      throw new Error(res.message||"Unknown error from Apps Script");
+    }
+  });
+}
