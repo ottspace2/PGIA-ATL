@@ -1,7 +1,7 @@
 body {
   font-family: Arial, sans-serif;
-  margin:0;
-  padding:0;
+  margin:0; 
+  padding:0; 
   background-color:#f9f9f9;
 }
 
@@ -14,7 +14,7 @@ body {
   box-shadow:0 4px 8px rgba(0,0,0,0.1);
 }
 
-/* HEADER LOGOS */
+/* LOGO container */
 .header-logos {
   display:flex;
   justify-content:space-between;
@@ -22,11 +22,11 @@ body {
   margin-bottom:10px;
 }
 .logo-left {
-  width:100px;
+  width:100px; 
   height:auto;
 }
 .logo-right {
-  width:80px;
+  width:80px; 
   height:auto;
 }
 
@@ -54,14 +54,18 @@ textarea {
   box-sizing:border-box;
 }
 
-.category {
-  margin-bottom:20px;
+/* For categories on Page 1 */
+.categoryRow {
+  margin:10px 0;
+  display:flex;
+  align-items:center;
 }
 
-.category>input[type="checkbox"] {
-  margin-right:6px;
+.categoryRow input[type="checkbox"] {
+  margin-right:10px;
 }
 
+/* For cluster dropdowns */
 .dropdown {
   margin-top:10px;
   padding-left:20px;
@@ -69,6 +73,14 @@ textarea {
   flex-direction:column;
   gap:5px;
   border-left:2px solid #ddd;
+}
+
+/* For Skills (Page2) - checkboxes side by side with label */
+#skillsSelection label {
+  display:inline-flex;
+  align-items:center;
+  margin-right:10px;
+  margin-bottom:5px;
 }
 
 button {
