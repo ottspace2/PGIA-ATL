@@ -3,7 +3,7 @@
  **************************************************************/
 function validateStudentForm() {
   const studentID = document.getElementById("studentID").value.trim();
-  const lastName = document.getElementById("lastName").value.trim();
+  const lastName  = document.getElementById("lastName").value.trim();
   const firstName = document.getElementById("firstName").value.trim();
 
   if (!studentID || !lastName || !firstName) {
@@ -15,7 +15,7 @@ function validateStudentForm() {
 }
 
 /**************************************************************
- * 1) FULL CATEGORIES, CLUSTERS, & SKILLS
+ * 1) FULL CATEGORIES & SKILLS (COMPREHENSIVE)
  **************************************************************/
 const categoriesAndSkills = {
   Communication: {
@@ -146,17 +146,47 @@ const categoriesAndSkills = {
   Thinking: {
     "Critical-thinking skills": [
       "Practise observing carefully to recognize problems",
-      // ...
+      "Gather and organize relevant information to formulate an argument",
+      "Recognize unstated assumptions and bias",
+      "Interpret data",
+      "Recognize and evaluate propositions",
+      "Evaluate evidence and arguments",
+      "Draw reasonable conclusions and generalizations",
+      "Test generalizations and conclusions",
+      "Revise understanding based on new information and evidence",
+      "Evaluate and manage risk",
+      "Formulate factual, topical, conceptual, and debatable questions",
+      "Consider ideas from multiple perspectives",
+      "Develop contrary or opposing arguments",
+      "Analyze complex concepts and projects into their constituent parts and synthesize them to create new understanding",
+      "Propose and evaluate a variety of solutions",
+      "Identify obstacles and challenges",
+      "Use models and simulations to explore complex systems and issues",
+      "Identify trends and forecast possibilities",
       "Troubleshoot systems and applications"
     ],
     "Creative-thinking skills": [
       "Use brainstorming and visual diagrams to generate new ideas and inquiries",
-      // ...
+      "Consider multiple alternatives, including those that might be unlikely or impossible",
+      "Create novel solutions to authentic problems",
+      "Make unexpected or unusual connections between objects and/or ideas",
+      "Design improvements to existing machines, media, and technologies",
+      "Design new machines, media, and technologies",
+      "Practise flexible thinking—develop multiple opposing, contradictory, and complementary arguments",
+      "Practise visible thinking strategies and techniques",
+      "Generate metaphors and analogies",
+      "Apply existing knowledge to generate new ideas, products, or processes",
+      "Make guesses, ask “what if” questions, and generate testable hypotheses",
       "Practise innovation and entrepreneurship"
     ],
     "Transfer skills": [
       "Use effective learning strategies in subject groups and disciplines",
-      // ...
+      "Apply skills and knowledge in unfamiliar situations",
+      "Inquire in different contexts to gain a different perspective",
+      "Compare conceptual understanding across multiple subject groups and disciplines",
+      "Make connections between subject groups and disciplines",
+      "Combine knowledge, understanding, and skills to create products or solutions",
+      "Transfer current knowledge to learning of new technologies",
       "Change the context of an inquiry to gain different perspectives"
     ]
   }
@@ -170,29 +200,26 @@ let totalQuestions = 0;
 let currentQuestionIndex = 0;
 
 /**************************************************************
- * 3) TOGGLE DROPDOWN (Cat -> Clusters)
+ * 3) TOGGLE DROPDOWN
  **************************************************************/
 function toggleDropdown(id) {
   const dropdown = document.getElementById(id);
   if (!dropdown) return;
-  dropdown.style.display = (dropdown.style.display === "none") ? "block" : "none";
+  dropdown.style.display = (dropdown.style.display==="none")?"block":"none";
 }
 
 /**************************************************************
  * 4) PAGE NAV
  **************************************************************/
 function goToPage(pageNumber) {
-  document.querySelectorAll("section").forEach(sec => sec.style.display="none");
+  document.querySelectorAll("section").forEach(sec => sec.style.display = "none");
   document.getElementById(`page${pageNumber}`).style.display = "block";
 
-  // If going to page2, populate the skills
-  if (pageNumber === 2) {
-    populateSkillsSelection();
-  }
+  if (pageNumber === 2) populateSkillsSelection();
 }
 
 /**************************************************************
- * 5) POPULATE SKILLS (PAGE 2)
+ * 5) POPULATE SKILLS (PAGE2)
  **************************************************************/
 function populateSkillsSelection() {
   const selectedClusters = Array.from(
@@ -220,32 +247,30 @@ function populateSkillsSelection() {
 }
 
 /**************************************************************
- * 6) START SELF-ASSESSMENT => PAGE 3
+ * 6) START SELF-ASSESSMENT => PAGE3
  **************************************************************/
 function startSelfAssessment() {
-  selectedSkills = Array.from(document.querySelectorAll('input[name="skill"]:checked'))
-    .map(i => i.value);
+  selectedSkills = Array.from(
+    document.querySelectorAll('input[name="skill"]:checked')
+  ).map(i => i.value);
 
   if (selectedSkills.length === 0) {
     alert("Please select at least one skill before starting the self-assessment.");
     return;
   }
 
-  totalQuestions = selectedSkills.length * 5; // e.g. 5 questions each
-  currentQuestionIndex = 0;
+  totalQuestions = selectedSkills.length; // Each skill => 1 question? Or 5? You decide.
+  currentQuestionIndex=0;
 
   goToPage(3);
   renderAssessmentQuestion(currentQuestionIndex);
 }
 
 /**************************************************************
- * 7) RENDER A SINGLE QUESTION (PAGE 3)
+ * 7) RENDER A SINGLE QUESTION (PAGE3) - Placeholder
  **************************************************************/
 function renderAssessmentQuestion(qIndex) {
-  const skillIndex = Math.floor(qIndex / 5);
-  const questionNum = qIndex % 5;
-  const skill = selectedSkills[skillIndex];
-
+  const skill = selectedSkills[qIndex];
   const container = document.getElementById("selfAssessment");
   container.innerHTML = "";
 
@@ -253,18 +278,15 @@ function renderAssessmentQuestion(qIndex) {
   titleEl.textContent = `ATL Skill: ${skill}`;
   container.appendChild(titleEl);
 
-  // For demonstration, just show a placeholder question
+  // Show a placeholder question (expand your logic as needed)
   const p = document.createElement("p");
   p.className = "question";
-  p.textContent = `Question #${questionNum+1} about skill: ${skill} ... (placeholder)`;
+  p.textContent = `Placeholder question for skill: ${skill}`;
   container.appendChild(p);
 
-  // Show/hide nav buttons
-  const prevBtn = document.getElementById("prevButton");
-  const nextBtn = document.getElementById("nextButton");
-
-  prevBtn.style.display = (qIndex > 0) ? "inline-block" : "none";
-  nextBtn.textContent = (qIndex < totalQuestions -1) ? "Next" : "Submit";
+  // Show/hide nav
+  document.getElementById("prevButton").style.display = (qIndex>0)?"inline-block":"none";
+  document.getElementById("nextButton").textContent = (qIndex< (totalQuestions-1))? "Next":"Submit";
 }
 
 /**************************************************************
@@ -277,60 +299,62 @@ function navigateSkill(direction) {
     handleFinalSubmit();
     return;
   }
-  if (currentQuestionIndex < 0) currentQuestionIndex = 0;
+  if (currentQuestionIndex < 0) currentQuestionIndex=0;
 
   renderAssessmentQuestion(currentQuestionIndex);
 }
 
 /**************************************************************
- * 9) FINAL SUBMIT => APPS SCRIPT
+ * 9) SUBMIT => APPS SCRIPT
  **************************************************************/
 function handleFinalSubmit() {
-  // minimal example: collecting just a few fields
   const data = {
-    studentID : document.getElementById("studentID").value.trim(),
-    lastName : document.getElementById("lastName").value.trim(),
-    firstName: document.getElementById("firstName").value.trim(),
-    date     : document.getElementById("dateField").value.trim(),
-    gradeLevel : document.getElementById("gradeLevel").value.trim(),
-    className  : document.getElementById("classField").value.trim(),
-    cohortYear : document.getElementById("cohortYear").value.trim(),
-    advisory   : document.getElementById("advisoryGroup").value.trim(),
-    teacher    : document.getElementById("teacher").value.trim(),
-
-    // placeholders for your final data:
-    category: "", 
-    cluster: "",
-    skill: "",
-    q1:"", q2:"", q3:"", q4:"", q5:""
+    // Minimal example collecting just a few fields
+    studentID :  document.getElementById("studentID").value.trim(),
+    lastName  :  document.getElementById("lastName").value.trim(),
+    firstName :  document.getElementById("firstName").value.trim(),
+    date      :  document.getElementById("dateField").value.trim(),
+    gradeLevel:  document.getElementById("gradeLevel").value.trim(),
+    className :  document.getElementById("classField").value.trim(),
+    cohortYear:  document.getElementById("cohortYear").value.trim(),
+    advisory  :  document.getElementById("advisoryGroup").value.trim(),
+    teacher   :  document.getElementById("teacher").value.trim(),
+    // placeholders for final Q data
+    category:"",
+    cluster:"",
+    skill:"",
+    q1:"",
+    q2:"",
+    q3:"",
+    q4:"",
+    q5:""
   };
 
-  // Now POST to Google Apps Script
   submitData(data);
 }
 
 /**************************************************************
- * 10) fetch() => Google Apps Script
+ * 10) fetch => Google Apps Script
  **************************************************************/
 function submitData(obj) {
   // Replace with your actual Web App URL
   const scriptUrl = "https://script.google.com/macros/s/YOUR_WEB_APP_URL/exec";
 
   fetch(scriptUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
     body: JSON.stringify(obj)
   })
-    .then(res => res.json())
-    .then(result => {
-      if (result.status === "success") {
-        alert("Data submitted successfully!");
-      } else {
-        alert("Error submitting data: " + (result.message || "Unknown error."));
-      }
-    })
-    .catch(err => {
-      console.error("Submission error:", err);
-      alert("An error occurred while submitting data.");
-    });
+  .then(res => res.json())
+  .then(result => {
+    if(result.status==="success"){
+      alert("Data submitted successfully!");
+    } else {
+      alert("Error submitting data: " + (result.message||"Unknown error."));
+    }
+  })
+  .catch(err=>{
+    console.error("Submission error:", err);
+    alert("An error occurred while submitting data.");
+  });
 }
