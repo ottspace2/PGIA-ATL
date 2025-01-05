@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PGIA ATL Skills Self-Assessment</title>
   <link rel="stylesheet" href="styles.css"/>
 </head>
@@ -14,9 +14,9 @@
     <header>
       <div class="header-logos">
         <!-- Left logo -->
-        <img src="viMontessoriLogo.png" alt="VI Montessori School Logo" class="logo-left"/>
+        <img src="viMontessoriLogo.png" alt="VI Montessori School Official Logo" class="logo-left"/>
         <!-- Right logo -->
-        <img src="ibLogo.png" alt="IB Logo" class="logo-right"/>
+        <img src="ibLogo.png" alt="IB Official Logo" class="logo-right"/>
       </div>
       <h1>Welcome to the PGIA ATL Skills Self-assessment</h1>
       <p>Please complete the following information to get started.</p>
@@ -26,21 +26,21 @@
 
       <!-- PAGE 0: Student Info -->
       <section id="page0">
-        <form id="studentForm" onsubmit="return false;">
-          <label>Student ID (required):</label>
-          <input type="text" id="studentID" required />
+        <form id="studentForm">
+          <label for="studentID">Student ID (required):</label>
+          <input type="text" id="studentID" name="studentID" required />
 
-          <label>Last Name (required):</label>
-          <input type="text" id="lastName" required />
+          <label for="lastName">Last Name (required):</label>
+          <input type="text" id="lastName" name="lastName" required />
 
-          <label>First Name (required):</label>
-          <input type="text" id="firstName" required />
+          <label for="firstName">First Name (required):</label>
+          <input type="text" id="firstName" name="firstName" required />
 
-          <label>Date:</label>
-          <input type="date" id="dateField" />
+          <label for="dateField">Date:</label>
+          <input type="date" id="dateField" name="dateField" />
 
-          <label>Grade Level:</label>
-          <select id="gradeLevel">
+          <label for="gradeLevel">Grade Level:</label>
+          <select id="gradeLevel" name="gradeLevel">
             <option value="">-- Select Grade --</option>
             <option>Grade 6</option>
             <option>Grade 7</option>
@@ -51,8 +51,8 @@
             <option>Grade 12</option>
           </select>
 
-          <label>Class (Subject):</label>
-          <select id="classField">
+          <label for="classField">Class (Subject):</label>
+          <select id="classField" name="classField">
             <option value="">-- Select Class --</option>
             <option>English</option>
             <option>Spanish B</option>
@@ -81,8 +81,8 @@
             <option>PE</option>
           </select>
 
-          <label>Cohort Year:</label>
-          <select id="cohortYear">
+          <label for="cohortYear">Cohort Year:</label>
+          <select id="cohortYear" name="cohortYear">
             <option value="">-- Select Cohort --</option>
             <option>Class of 2025</option>
             <option>Class of 2026</option>
@@ -94,104 +94,104 @@
             <option>Class of 2032</option>
           </select>
 
-          <label>Advisory Group:</label>
-          <select id="advisoryGroup">
+          <label for="advisoryGroup">Advisory Group:</label>
+          <select id="advisoryGroup" name="advisoryGroup">
             <option value="">-- Select Advisory Group --</option>
             <option>Group A</option>
             <option>Group B</option>
             <option>Group C</option>
           </select>
 
-          <label>Subject/Teacher:</label>
-          <select id="teacher">
+          <label for="teacher">Subject/Teacher:</label>
+          <select id="teacher" name="teacher">
             <option value="">-- Select Teacher --</option>
             <option>Mr. Ott</option>
             <option>Mr. McCormick</option>
             <option>Ms. Tanner</option>
           </select>
+
+          <button type="button" id="continueButton">Continue</button>
         </form>
-        <button onclick="validateStudentForm()">Continue</button>
       </section>
 
       <!-- PAGE 1: Categories & Clusters -->
-      <section id="page1" style="display:none;">
+      <section id="page1" class="hidden">
         <h2>Select Categories and Clusters</h2>
         <p>Select the skill categories and clusters you worked on in this unit.</p>
 
         <!-- Communication -->
         <div class="categoryRow">
-          <input type="checkbox" id="commCheckbox" onclick="toggleDropdown('commClusters')" />
+          <input type="checkbox" id="commCheckbox" name="category" value="Communication" />
           <label for="commCheckbox">Communication</label>
-          <div class="dropdown" id="commClusters" style="display:none;">
-            <label>
-              <input type="checkbox" name="cluster" value="Exchanging thoughts, messages, and information effectively"/>
-              Exchanging thoughts, messages, and information effectively
-            </label>
-            <label>
-              <input type="checkbox" name="cluster" value="Demonstrating communication through language"/>
-              Demonstrating communication through language
-            </label>
-          </div>
+        </div>
+        <div class="dropdown hidden" id="commClusters">
+          <label>
+            <input type="checkbox" name="cluster" value="Exchanging thoughts, messages, and information effectively"/>
+            Exchanging thoughts, messages, and information effectively
+          </label>
+          <label>
+            <input type="checkbox" name="cluster" value="Demonstrating communication through language"/>
+            Demonstrating communication through language
+          </label>
         </div>
 
         <!-- Social -->
         <div class="categoryRow">
-          <input type="checkbox" id="socialCheckbox" onclick="toggleDropdown('socialClusters')" />
+          <input type="checkbox" id="socialCheckbox" name="category" value="Social" />
           <label for="socialCheckbox">Social</label>
-          <div class="dropdown" id="socialClusters" style="display:none;">
-            <label><input type="checkbox" name="cluster" value="Collaboration skills"/>Collaboration skills</label>
-          </div>
+        </div>
+        <div class="dropdown hidden" id="socialClusters">
+          <label><input type="checkbox" name="cluster" value="Collaboration skills"/>Collaboration skills</label>
         </div>
 
         <!-- Self-Management -->
         <div class="categoryRow">
-          <input type="checkbox" id="selfMgmtCheckbox" onclick="toggleDropdown('selfMgmtClusters')" />
+          <input type="checkbox" id="selfMgmtCheckbox" name="category" value="Self-Management" />
           <label for="selfMgmtCheckbox">Self-Management</label>
-          <div class="dropdown" id="selfMgmtClusters" style="display:none;">
-            <label><input type="checkbox" name="cluster" value="Organization skills"/>Organization skills</label>
-            <label><input type="checkbox" name="cluster" value="Affective skills"/>Affective skills</label>
-            <label><input type="checkbox" name="cluster" value="Reflection skills"/>Reflection skills</label>
-          </div>
+        </div>
+        <div class="dropdown hidden" id="selfMgmtClusters">
+          <label><input type="checkbox" name="cluster" value="Organization skills"/>Organization skills</label>
+          <label><input type="checkbox" name="cluster" value="Affective skills"/>Affective skills</label>
+          <label><input type="checkbox" name="cluster" value="Reflection skills"/>Reflection skills</label>
         </div>
 
         <!-- Research -->
         <div class="categoryRow">
-          <input type="checkbox" id="researchCheckbox" onclick="toggleDropdown('researchClusters')" />
+          <input type="checkbox" id="researchCheckbox" name="category" value="Research" />
           <label for="researchCheckbox">Research</label>
-          <div class="dropdown" id="researchClusters" style="display:none;">
-            <label><input type="checkbox" name="cluster" value="Information literacy skills"/>Information literacy skills</label>
-            <label><input type="checkbox" name="cluster" value="Media literacy skills"/>Media literacy skills</label>
-          </div>
+        </div>
+        <div class="dropdown hidden" id="researchClusters">
+          <label><input type="checkbox" name="cluster" value="Information literacy skills"/>Information literacy skills</label>
+          <label><input type="checkbox" name="cluster" value="Media literacy skills"/>Media literacy skills</label>
         </div>
 
         <!-- Thinking -->
         <div class="categoryRow">
-          <input type="checkbox" id="thinkingCheckbox" onclick="toggleDropdown('thinkingClusters')" />
+          <input type="checkbox" id="thinkingCheckbox" name="category" value="Thinking" />
           <label for="thinkingCheckbox">Thinking</label>
-          <div class="dropdown" id="thinkingClusters" style="display:none;">
-            <label><input type="checkbox" name="cluster" value="Critical-thinking skills"/>Critical-thinking skills</label>
-            <label><input type="checkbox" name="cluster" value="Creative-thinking skills"/>Creative-thinking skills</label>
-            <label><input type="checkbox" name="cluster" value="Transfer skills"/>Transfer skills</label>
-          </div>
+        </div>
+        <div class="dropdown hidden" id="thinkingClusters">
+          <label><input type="checkbox" name="cluster" value="Critical-thinking skills"/>Critical-thinking skills</label>
+          <label><input type="checkbox" name="cluster" value="Creative-thinking skills"/>Creative-thinking skills</label>
+          <label><input type="checkbox" name="cluster" value="Transfer skills"/>Transfer skills</label>
         </div>
 
-        <button onclick="goToPage(2)">Next</button>
+        <button type="button" id="nextButtonPage1">Next</button>
       </section>
 
       <!-- PAGE 2: Skills -->
-      <section id="page2" style="display:none;">
+      <section id="page2" class="hidden">
         <h2>Select ATL Skills</h2>
         <div id="skillsSelection"></div>
-        <button onclick="startSelfAssessment()">Start Self-Assessment</button>
+        <button type="button" id="startAssessmentButton">Start Self-Assessment</button>
       </section>
 
       <!-- PAGE 3: Self-Assessment (multi-step with 5 questions per skill) -->
-      <section id="page3" style="display:none;">
+      <section id="page3" class="hidden">
         <h2>Self-Assessment</h2>
         <div id="selfAssessment"></div>
         <div style="text-align:center; margin-top:20px;">
-          <button id="prevButton" onclick="navigateSkill(-1)" style="display:none;">Previous</button>
-          <button id="nextButton" onclick="navigateSkill(1)">Next</button>
+          <button id="nextButton">Next</button>
         </div>
       </section>
 
