@@ -10,10 +10,12 @@
 
   <div class="container">
 
-    <!-- HEADER with 2 logos (replace src with actual images) -->
+    <!-- TOP HEADER with 2 logos (replace with real images) -->
     <header>
       <div class="header-logos">
+        <!-- Left logo -->
         <img src="viMontessoriLogo.png" alt="VI Montessori School Logo" class="logo-left"/>
+        <!-- Right logo -->
         <img src="ibLogo.png" alt="IB Logo" class="logo-right"/>
       </div>
       <h1>Welcome to the PGIA ATL Skills Self-assessment</h1>
@@ -153,4 +155,53 @@
         </div>
 
         <!-- Research -->
-        <div class="categoryRow"
+        <div class="categoryRow">
+          <input type="checkbox" id="researchCheckbox" onclick="toggleDropdown('researchClusters')" />
+          <label for="researchCheckbox">Research</label>
+          <div class="dropdown" id="researchClusters" style="display:none;">
+            <label><input type="checkbox" name="cluster" value="Information literacy skills"/>Information literacy skills</label>
+            <label><input type="checkbox" name="cluster" value="Media literacy skills"/>Media literacy skills</label>
+          </div>
+        </div>
+
+        <!-- Thinking -->
+        <div class="categoryRow">
+          <input type="checkbox" id="thinkingCheckbox" onclick="toggleDropdown('thinkingClusters')" />
+          <label for="thinkingCheckbox">Thinking</label>
+          <div class="dropdown" id="thinkingClusters" style="display:none;">
+            <label><input type="checkbox" name="cluster" value="Critical-thinking skills"/>Critical-thinking skills</label>
+            <label><input type="checkbox" name="cluster" value="Creative-thinking skills"/>Creative-thinking skills</label>
+            <label><input type="checkbox" name="cluster" value="Transfer skills"/>Transfer skills</label>
+          </div>
+        </div>
+
+        <button onclick="goToPage(2)">Next</button>
+      </section>
+
+      <!-- PAGE 2: Skills -->
+      <section id="page2" style="display:none;">
+        <h2>Select ATL Skills</h2>
+        <div id="skillsSelection"></div>
+        <button onclick="startSelfAssessment()">Start Self-Assessment</button>
+      </section>
+
+      <!-- PAGE 3: Self-Assessment (multi-step with 5 questions per skill) -->
+      <section id="page3" style="display:none;">
+        <h2>Self-Assessment</h2>
+        <div id="selfAssessment"></div>
+        <div style="text-align:center; margin-top:20px;">
+          <button id="prevButton" onclick="navigateSkill(-1)" style="display:none;">Previous</button>
+          <button id="nextButton" onclick="navigateSkill(1)">Next</button>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      <p>&copy; 2024 PGIA. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
