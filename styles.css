@@ -1,71 +1,18 @@
-/* Root Variables for Consistency */
-:root {
-  --primary-color: #007bff;
-  --secondary-color: #0056b3;
-  --background-color: #f9f9f9;
-  --container-bg: #ffffff;
-  --border-radius: 8px;
-  --box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  --font-family: 'Arial', sans-serif;
-  --font-weight-bold: bold;
-  --transition-duration: 0.3s;
-}
+/* styles.css */
 
-/* Base Styles */
-body {
-  font-family: var(--font-family);
-  background-color: var(--background-color);
+/* Basic Reset */
+* {
   margin: 0;
   padding: 0;
-  line-height: 1.6;
+  box-sizing: border-box;
 }
 
-.container {
-  max-width: 800px;
-  margin: 20px auto;
+/* Body Styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
   padding: 20px;
-  background: var(--container-bg);
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
-}
-
-.header-logos {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.logo-left, .logo-right {
-  width: 100px;
-  height: auto;
-}
-
-@media (max-width: 600px) {
-  .header-logos {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .logo-left {
-    width: 80px;
-  }
-  
-  .logo-right {
-    width: 60px;
-  }
-}
-
-header, footer {
-  text-align: center;
-}
-
-h1, h2 {
-  margin-bottom: 20px;
-}
-
-h2 {
-  margin-top: 0;
 }
 
 /* Hidden Class */
@@ -73,151 +20,136 @@ h2 {
   display: none;
 }
 
-/* Category Rows */
-.categoryRow {
-  margin: 10px 0;
+/* Logo Container */
+.logo-container {
   display: flex;
+  justify-content: center;
   align-items: center;
+  gap: 50px;
+  margin-bottom: 20px;
 }
 
-.categoryRow input[type="checkbox"] {
-  margin-right: 10px;
+.logo-container img {
+  max-width: 150px;
+  height: auto;
 }
 
-.categoryRow label {
-  font-weight: var(--font-weight-bold);
+/* Section Styling */
+section {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  max-width: 800px;
+  margin: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Dropdowns */
-.dropdown {
-  margin-top: 10px;
-  padding-left: 20px;
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  border-left: 2px solid #ddd;
-  transition: max-height var(--transition-duration) ease, opacity var(--transition-duration) ease;
-  overflow: hidden;
-  max-height: 0;
-  opacity: 0;
+/* Headings */
+h1, h2, h3 {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.dropdown.show {
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+h3 {
+  font-size: 1.2em;
+}
+
+/* Form Styling */
+form {
   display: flex;
-  max-height: 1000px; /* Arbitrary large value to accommodate content */
-  opacity: 1;
+  flex-direction: column;
 }
 
-/* Labels and Inputs */
 label {
-  display: block;
-  margin: 10px 0 5px;
-  font-weight: var(--font-weight-bold);
-}
-
-input[type="text"],
-input[type="date"],
-select,
-textarea {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 15px;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  transition: border-color var(--transition-duration) ease;
-}
-
-input[type="text"]:focus,
-input[type="date"]:focus,
-select:focus,
-textarea:focus {
-  border-color: var(--primary-color);
-  outline: none;
-}
-
-input:invalid {
-  border-color: red;
-}
-
-::placeholder {
-  color: #aaa;
-}
-
-/* Skills Selection */
-#skillsSelection label {
-  display: block;
+  margin-top: 10px;
   margin-bottom: 5px;
 }
 
-#skillsSelection .skill-category {
-  margin-bottom: 15px;
-}
-
-#skillsSelection .skill-category h3 {
-  margin-bottom: 10px;
-}
-
-/* Buttons */
-button {
-  display: block;
-  margin: 20px auto;
-  padding: 10px 20px;
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color var(--transition-duration) ease;
-}
-
-button:hover {
-  background-color: var(--secondary-color);
-}
-
-button:focus {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
-}
-
-button:active {
-  background-color: #004494;
-}
-
-/* Self-Assessment Styling */
-.question {
-  margin: 20px 0;
-}
-
-.options {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.options label {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.options input[type="radio"],
-.options input[type="checkbox"] {
-  margin-right: 10px;
-  transform: scale(1.2);
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 textarea {
   resize: vertical;
 }
 
-/* Likert Scale */
+button {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #0066cc;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+button:hover {
+  background-color: #005bb5;
+}
+
+/* Required Field Indicator */
+.required {
+  color: red;
+  margin-left: 5px;
+}
+
+/* Categories & Clusters */
+.category {
+  margin-bottom: 20px;
+}
+
+.dropdown {
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
+.dropdown.hidden {
+  display: none;
+}
+
+.dropdown label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Skills Selection */
+.skill-category {
+  margin-bottom: 20px;
+}
+
+.skill-category h3 {
+  margin-bottom: 10px;
+}
+
+.skill-category label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Self-Assessment Questions */
+.skill-container {
+  margin-bottom: 30px;
+}
+
 .scaleDiv {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 40px;
-  margin-top: 20px;
+  justify-content: space-between;
+  margin-top: 10px;
 }
 
 .scaleCol {
@@ -226,12 +158,40 @@ textarea {
   align-items: center;
 }
 
-.scaleCol div {
-  margin-bottom: 4px;
-  text-align: center;
+.scaleCol input[type="radio"] {
+  margin-top: 5px;
 }
 
-/* Responsive Skills Stacking on Page 3 */
-#selfAssessment .skill-container {
-  margin-bottom: 30px;
+/* Buttons */
+button {
+  width: 100px;
+  align-self: center;
+}
+
+#nextButtonPage1,
+#nextButtonPage2,
+#startAssessmentButton,
+#nextButton {
+  width: 150px;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .logo-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .scaleDiv {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .scaleCol {
+    margin-bottom: 10px;
+  }
+
+  button {
+    width: 100%;
+  }
 }
