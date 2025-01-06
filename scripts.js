@@ -4,10 +4,10 @@
  * 0) INITIALIZATION: SET UP EVENT LISTENERS AFTER DOM LOADS
  **************************************************************/
 document.addEventListener('DOMContentLoaded', function() {
-  // Event listener for Continue button on Landing Page
+  // Event listener for Continue button on Landing Page (page0)
   document.getElementById('continueButton').addEventListener('click', validateStudentForm);
 
-  // Event listeners for category checkboxes on Page 2 (Categories & Clusters)
+  // Event listeners for category checkboxes on Page 2 (Categories & Clusters) (page2)
   const categoryCheckboxes = document.querySelectorAll('input[name="category"]');
   categoryCheckboxes.forEach(checkbox => {
     checkbox.addEventListener('change', function() {
@@ -15,20 +15,30 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Event listener for Next button on Page 1
+  // Event listener for Next button on Page 1 (Student Info) (page1)
   document.getElementById('nextButtonPage1').addEventListener('click', function() {
     const clustersChosen = Array.from(document.querySelectorAll('input[name="cluster"]:checked')).map(i => i.value);
     if (clustersChosen.length === 0) {
       alert("Please select at least one cluster to proceed.");
       return;
     }
+    goToPage(2);
+  });
+
+  // Event listener for Next button on Page 2 (Categories & Clusters) (page2)
+  document.getElementById('nextButtonPage2').addEventListener('click', function() {
+    const skillsChosen = Array.from(document.querySelectorAll('input[name="skill"]:checked')).map(i => i.value);
+    if (skillsChosen.length === 0) {
+      alert("Please select at least one skill to proceed.");
+      return;
+    }
     goToPage(3);
   });
 
-  // Event listener for Start Assessment button on Page 3 (Skills Selection)
+  // Event listener for Start Assessment button on Page 3 (Skills Selection) (page3)
   document.getElementById('startAssessmentButton').addEventListener('click', startSelfAssessment);
 
-  // Event listener for Next button on Page 4 (Self-Assessment)
+  // Event listener for Next button on Page 4 (Self-Assessment) (page4)
   document.getElementById('nextButton').addEventListener('click', navigateSkill);
 
   // Enhance date field interaction: Clicking anywhere on the date field triggers the date picker
@@ -240,30 +250,8 @@ const proficiencyLevels = {
     "I can independently apply this skill to different tasks or challenges.",
     "I can explain how and why I used this skill to support my learning.",
     "I can adapt this skill to new situations or problems I encounter."
-  ],
-  "Expert/Sharing (Self-Regulation)": [
-    "I can teach others how to use this skill effectively.",
-    "I can evaluate how well I used this skill and suggest ways to improve.",
-    "I can use this skill naturally and adjust it as needed in different contexts.",
-    "I can assess how others are using this skill and provide constructive feedback."
   ]
 };
-
-/**************************************************************
- * 3) IB LEARNER TRAITS
- **************************************************************/
-const ibLearnerTraits = [
-  { trait:"Inquirer", example:"I demonstrated being an inquirer by using research skills..." },
-  { trait:"Knowledgeable", example:"I was knowledgeable when I applied discipline-specific terms..." },
-  { trait:"Thinker", example:"I showed myself as a thinker by using critical-thinking skills..." },
-  { trait:"Communicator", example:"I embodied the role of a communicator by practicing intercultural understanding..." },
-  { trait:"Principled", example:"I demonstrated being principled by taking responsibility..." },
-  { trait:"Open-minded", example:"I showed open-mindedness by actively listening..." },
-  { trait:"Caring", example:"I was caring by helping a classmate improve their understanding..." },
-  { trait:"Risk-Taker", example:"I demonstrated being a risk-taker by trying a new approach..." },
-  { trait:"Balanced", example:"I showed balance by managing my time effectively..." },
-  { trait:"Reflective", example:"I was reflective by considering the strengths and weaknesses..." }
-];
 
 /**************************************************************
  * 4) GLOBAL VARIABLES
@@ -274,8 +262,11 @@ let currentQuestionIndex = 0;
 let responses = {}; // To store user responses
 let proficiencyStatements = {}; // To store random proficiency statements per skill
 
+// Secret Token (Ensure this matches the one set in your Google Apps Script)
+const SECRET_TOKEN = "your-secret-token"; // Replace with your actual secret token
+
 // Google Apps Script Web App URL
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwy6XqNUk51LwwUTJVS34oH65d7GnS9FKlBKVfxTx7d0bRwJJObBZl_veD2x7afIVgaZw/exec;
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzFqBZxSilArZ-iGaxBC1TA2DcdpJ_T-7AfiWvKwUE__R8PIfc0QFNtd9Ak8-T0BwV07g/exec";
 
 /**************************************************************
  * 5) TOGGLE DROPDOWN FUNCTION: SHOW/HIDE CLUSTERS
@@ -300,7 +291,7 @@ function goToPage(num){
     populateSkillsSelection();
   }
   if(num === 4){
-    // Any specific actions when entering page 4
+    // Any specific actions when entering page4
   }
 }
 
@@ -367,7 +358,7 @@ function startSelfAssessment(){
     });
   });
 
-  // 4 questions per skill (Q1, Q2, Q4)
+  // 3 questions per skill (Q1, Q2, Q4)
   totalQuestions = selectedSkills.length * 3;
   currentQuestionIndex = 0;
 
@@ -618,7 +609,8 @@ function handleFinalSubmit(){
       skill,
       q1: responses[skill]?.q1 || "",
       q2: responses[skill]?.q2 || "",
-      q4: responses[skill]?.q4 || ""
+      q4: responses[skill]?.q4 || "",
+      token: SECRET_TOKEN // Include token here
     };
 
     tasks.push(submitDataForSkill(dataObj));
