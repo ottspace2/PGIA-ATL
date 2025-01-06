@@ -275,7 +275,7 @@ let responses = {}; // To store user responses
 let proficiencyStatements = {}; // To store random proficiency statements per skill
 
 // Google Apps Script Web App URL
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzFqBZxSilArZ-iGaxBC1TA2DcdpJ_T-7AfiWvKwUE__R8PIfc0QFNtd9Ak8-T0BwV07g/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwy6XqNUk51LwwUTJVS34oH65d7GnS9FKlBKVfxTx7d0bRwJJObBZl_veD2x7afIVgaZw/exec;
 
 /**************************************************************
  * 5) TOGGLE DROPDOWN FUNCTION: SHOW/HIDE CLUSTERS
