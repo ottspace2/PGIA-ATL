@@ -32,7 +32,10 @@ document.addEventListener('DOMContentLoaded', function() {
   // Enhance date field interaction
   const dateField = document.getElementById('dateField');
   dateField.addEventListener('click', function() {
-    this.showPicker ? this.showPicker() : null; // Fallback if showPicker is supported
+    // For browsers that support showPicker()
+    if (typeof this.showPicker === 'function') {
+      this.showPicker();
+    }
   });
 });
 
@@ -259,7 +262,7 @@ const ibLearnerTraits = [
 ];
 
 /**************************************************************
- * 3) GLOBAL
+ * 3) GLOBAL VARIABLES
  **************************************************************/
 let selectedSkills = [];
 let totalQuestions = 0;
@@ -268,7 +271,7 @@ let responses = {}; // To store user responses
 let proficiencyStatements = {}; // To store random proficiency statements per skill
 
 /**************************************************************
- * 4) TOGGLE DROPDOWN
+ * 4) TOGGLE DROPDOWN FUNCTION
  **************************************************************/
 function toggleDropdown(id){
   const dd = document.getElementById(id);
@@ -277,7 +280,7 @@ function toggleDropdown(id){
 }
 
 /**************************************************************
- * 5) PAGE NAV
+ * 5) PAGE NAVIGATION FUNCTION
  **************************************************************/
 function goToPage(num){
   document.querySelectorAll("section").forEach(sec => sec.classList.add('hidden'));
@@ -292,7 +295,7 @@ function goToPage(num){
 }
 
 /**************************************************************
- * 6) POPULATE SKILLS => PAGE2
+ * 6) POPULATE SKILLS SELECTION ON PAGE 2
  **************************************************************/
 function populateSkillsSelection(){
   const clustersChosen = Array.from(
@@ -309,6 +312,11 @@ function populateSkillsSelection(){
       clusterToCategory[cluName] = { category: cat, skills: skills };
     });
   });
+
+  if(clustersChosen.length === 0){
+    skillsDiv.innerHTML = "<p>No clusters selected.</p>";
+    return;
+  }
 
   clustersChosen.forEach(cluster => {
     const { category, skills } = clusterToCategory[cluster];
@@ -327,7 +335,7 @@ function populateSkillsSelection(){
 }
 
 /**************************************************************
- * 7) START SELF-ASSESSMENT => PAGE3
+ * 7) START SELF-ASSESSMENT FUNCTION
  **************************************************************/
 function startSelfAssessment(){
   selectedSkills = Array.from(
@@ -356,7 +364,7 @@ function startSelfAssessment(){
 }
 
 /**************************************************************
- * 8) RENDER SINGLE Q
+ * 8) RENDER SINGLE QUESTION FUNCTION
  **************************************************************/
 function renderAssessmentQuestion(qIndex){
   const skillIndex = Math.floor(qIndex / 5);
@@ -415,7 +423,7 @@ function renderAssessmentQuestion(qIndex){
 }
 
 /**************************************************************
- * 9) Q1 => LIKERT
+ * 9) Q1 => LIKERT SCALE QUESTION
  **************************************************************/
 function showLikertQuestion(container, skillIndex, skill){
   const scaleDiv = document.createElement("div");
@@ -456,7 +464,7 @@ function showLikertQuestion(container, skillIndex, skill){
 }
 
 /**************************************************************
- * 10) Q2 => PROFICIENCY
+ * 10) Q2 => PROFICIENCY QUESTION
  **************************************************************/
 function showProficiencyQuestion(container, skillIndex, skill){
   const opsDiv = document.createElement("div");
@@ -479,7 +487,7 @@ function showProficiencyQuestion(container, skillIndex, skill){
 }
 
 /**************************************************************
- * 11) Q3 => SHORT RESP #1
+ * 11) Q3 => SHORT RESPONSE QUESTION #1
  **************************************************************/
 function showShortResponseQ3(container, skillIndex, skill){
   const ta = document.createElement("textarea");
@@ -491,7 +499,7 @@ function showShortResponseQ3(container, skillIndex, skill){
 }
 
 /**************************************************************
- * 12) Q4 => SHORT RESP #2
+ * 12) Q4 => SHORT RESPONSE QUESTION #2
  **************************************************************/
 function showShortResponseQ4(container, skillIndex, skill){
   const ta = document.createElement("textarea");
@@ -503,7 +511,7 @@ function showShortResponseQ4(container, skillIndex, skill){
 }
 
 /**************************************************************
- * 13) Q5 => IB Learner trait
+ * 13) Q5 => IB Learner Profile TRAIT QUESTION
  **************************************************************/
 function showIbLearnerProfileQ5(container, skillIndex, skill){
   const select = document.createElement("select");
@@ -622,7 +630,7 @@ function saveCurrentResponse(){
 }
 
 /**************************************************************
- * 17) HANDLE FINAL SUBMIT => Post multiple rows (each skill)
+ * 17) HANDLE FINAL SUBMIT => POST MULTIPLE ROWS (EACH SKILL)
  **************************************************************/
 function handleFinalSubmit(){
   // Gather user info from page0
@@ -635,6 +643,13 @@ function handleFinalSubmit(){
   const cohort    = document.getElementById("cohortYear").value.trim();
   const advisory  = document.getElementById("advisoryGroup").value.trim();
   const teacher   = document.getElementById("teacher").value.trim();
+
+  // Basic validation to ensure required fields are filled
+  if(!studentID || !lastName || !firstName){
+    alert("Please complete all required fields before submitting.");
+    goToPage(0);
+    return;
+  }
 
   let tasks = [];
 
@@ -712,14 +727,14 @@ function submitDataForSkill(obj){
 }
 
 /**************************************************************
- * 19) RANDOM ARRAY PICK
+ * 19) RANDOM ARRAY PICK FUNCTION
  **************************************************************/
 function pickRandom(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
 /**************************************************************
- * 20) VALIDATE STUDENT FORM
+ * 20) VALIDATE STUDENT FORM FUNCTION
  **************************************************************/
 function validateStudentForm() {
   const studentID = document.getElementById("studentID").value.trim();
