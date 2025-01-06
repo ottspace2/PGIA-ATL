@@ -1,11 +1,13 @@
+/* scripts.js */
+
 /**************************************************************
  * 0) INITIALIZATION: SET UP EVENT LISTENERS AFTER DOM LOADS
  **************************************************************/
 document.addEventListener('DOMContentLoaded', function() {
-  // Event listener for Continue button on Page 0 (Student Info)
+  // Event listener for Continue button on Landing Page
   document.getElementById('continueButton').addEventListener('click', validateStudentForm);
 
-  // Event listeners for category checkboxes on Page 1 (Categories & Clusters)
+  // Event listeners for category checkboxes on Page 2 (Categories & Clusters)
   const categoryCheckboxes = document.querySelectorAll('input[name="category"]');
   categoryCheckboxes.forEach(checkbox => {
     checkbox.addEventListener('change', function() {
@@ -20,13 +22,13 @@ document.addEventListener('DOMContentLoaded', function() {
       alert("Please select at least one cluster to proceed.");
       return;
     }
-    goToPage(2);
+    goToPage(3);
   });
 
-  // Event listener for Start Assessment button on Page 2 (Skills Selection)
+  // Event listener for Start Assessment button on Page 3 (Skills Selection)
   document.getElementById('startAssessmentButton').addEventListener('click', startSelfAssessment);
 
-  // Event listener for Next button on Page 3 (Self-Assessment)
+  // Event listener for Next button on Page 4 (Self-Assessment)
   document.getElementById('nextButton').addEventListener('click', navigateSkill);
 
   // Enhance date field interaction: Clicking anywhere on the date field triggers the date picker
@@ -218,7 +220,7 @@ const categoriesAndSkills = {
 };
 
 /**************************************************************
- * 2) PROFIENCY LEVEL STATEMENTS
+ * 2) PROFICIENCY LEVEL STATEMENTS
  **************************************************************/
 const proficiencyLevels = {
   "Novice/Beginning (Observation)": [
@@ -272,9 +274,6 @@ let currentQuestionIndex = 0;
 let responses = {}; // To store user responses
 let proficiencyStatements = {}; // To store random proficiency statements per skill
 
-// Secret Token (Ensure this matches the one set in your Google Apps Script)
-const SECRET_TOKEN = "your-secret-token"; // Replace with your actual secret token
-
 // Google Apps Script Web App URL
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzFqBZxSilArZ-iGaxBC1TA2DcdpJ_T-7AfiWvKwUE__R8PIfc0QFNtd9Ak8-T0BwV07g/exec";
 
@@ -287,7 +286,7 @@ function toggleDropdown(id){
     console.error(`Dropdown with id ${id} not found.`);
     return;
   }
-  dd.classList.toggle('show');
+  dd.classList.toggle('hidden');
 }
 
 /**************************************************************
@@ -297,16 +296,16 @@ function goToPage(num){
   document.querySelectorAll("section").forEach(sec => sec.classList.add('hidden'));
   document.getElementById(`page${num}`).classList.remove('hidden');
 
-  if(num === 2){
+  if(num === 3){
     populateSkillsSelection();
   }
-  if(num === 3){
-    // Any specific actions when entering page 3
+  if(num === 4){
+    // Any specific actions when entering page 4
   }
 }
 
 /**************************************************************
- * 7) POPULATE SKILLS SELECTION FUNCTION: PAGE 2
+ * 7) POPULATE SKILLS SELECTION FUNCTION: PAGE 3
  **************************************************************/
 function populateSkillsSelection(){
   const clustersChosen = Array.from(
@@ -368,20 +367,20 @@ function startSelfAssessment(){
     });
   });
 
-  // 5 questions per skill
-  totalQuestions = selectedSkills.length * 5;
+  // 4 questions per skill (Q1, Q2, Q4)
+  totalQuestions = selectedSkills.length * 3;
   currentQuestionIndex = 0;
 
-  goToPage(3);
+  goToPage(4);
   renderAssessmentQuestion(currentQuestionIndex);
 }
 
 /**************************************************************
- * 9) RENDER ASSESSMENT QUESTION FUNCTION: PAGE 3
+ * 9) RENDER ASSESSMENT QUESTION FUNCTION: PAGE 4
  **************************************************************/
 function renderAssessmentQuestion(qIndex){
-  const skillIndex = Math.floor(qIndex / 5);
-  const questionNum = qIndex % 5;
+  const skillIndex = Math.floor(qIndex / 3);
+  const questionNum = qIndex % 3;
   const skill = selectedSkills[skillIndex];
 
   const container = document.getElementById("selfAssessment");
@@ -412,20 +411,10 @@ function renderAssessmentQuestion(qIndex){
       skillContainer.appendChild(p);
       showProficiencyQuestion(skillContainer, skillIndex, skill);
       break;
-    case 2: // Q3 => SHORT RESPONSE #1
-      p.textContent = `Describe one way I used ${skill} and what could I do to improve in the future?`;
-      skillContainer.appendChild(p);
-      showShortResponseQ3(skillContainer, skillIndex, skill);
-      break;
-    case 3: // Q4 => SHORT RESPONSE #2
-      p.textContent = `What is one challenge you experienced related to ${skill}, and how did you overcome it?`;
+    case 2: // Q4 => REWORDED SHORT RESPONSE QUESTION
+      p.textContent = `What is one challenge you experienced applying "${skill}" and how you would overcome a similar challenge in the future?`;
       skillContainer.appendChild(p);
       showShortResponseQ4(skillContainer, skillIndex, skill);
-      break;
-    case 4: // Q5 => IB Learner Trait
-      p.textContent = `If someone were observing you practicing this skill, which IB learner profile trait would they say you demonstrated? Why?`;
-      skillContainer.appendChild(p);
-      showIbLearnerProfileQ5(skillContainer, skillIndex, skill);
       break;
     default:
       console.error("Unknown question number:", questionNum);
@@ -486,8 +475,7 @@ function showProficiencyQuestion(container, skillIndex, skill){
   const proficiencyLevelsOrdered = [
     "Novice/Beginning (Observation)",
     "Learner/Developing (Emulation)",
-    "Practitioner/Using (Demonstration)",
-    "Expert/Sharing (Self-Regulation)"
+    "Practitioner/Using (Demonstration)"
   ];
 
   proficiencyLevelsOrdered.forEach(level => {
@@ -500,19 +488,7 @@ function showProficiencyQuestion(container, skillIndex, skill){
 }
 
 /**************************************************************
- * 12) Q3 => SHORT RESPONSE QUESTION #1 FUNCTION
- **************************************************************/
-function showShortResponseQ3(container, skillIndex, skill){
-  const ta = document.createElement("textarea");
-  ta.name = `Q3-skill${skillIndex}`;
-  ta.rows = 4;
-  ta.placeholder = "Describe your experience...";
-  ta.required = true; // Ensure response
-  container.appendChild(ta);
-}
-
-/**************************************************************
- * 13) Q4 => SHORT RESPONSE QUESTION #2 FUNCTION
+ * 12) Q4 => SHORT RESPONSE QUESTION FUNCTION
  **************************************************************/
 function showShortResponseQ4(container, skillIndex, skill){
   const ta = document.createElement("textarea");
@@ -524,38 +500,7 @@ function showShortResponseQ4(container, skillIndex, skill){
 }
 
 /**************************************************************
- * 14) Q5 => IB LEARNER TRAIT QUESTION FUNCTION
- **************************************************************/
-function showIbLearnerProfileQ5(container, skillIndex, skill){
-  const select = document.createElement("select");
-  select.name = `Q5-select${skillIndex}`;
-  select.required = true;
-
-  const placeholder = document.createElement("option");
-  placeholder.value = "";
-  placeholder.textContent = "Select IB learner profile trait...";
-  placeholder.disabled = true;
-  placeholder.selected = true;
-  select.appendChild(placeholder);
-
-  ibLearnerTraits.forEach(obj => {
-    const opt = document.createElement("option");
-    opt.value = obj.trait;
-    opt.textContent = `${obj.trait} (${obj.example})`;
-    select.appendChild(opt);
-  });
-  container.appendChild(select);
-
-  const ta = document.createElement("textarea");
-  ta.name = `Q5-skill${skillIndex}`;
-  ta.rows = 4;
-  ta.placeholder = "Explain why that trait was demonstrated...";
-  ta.required = true;
-  container.appendChild(ta);
-}
-
-/**************************************************************
- * 15) NEXT BUTTON NAVIGATION FUNCTION: HANDLE NAVIGATION AND SUBMISSION
+ * 13) NEXT BUTTON NAVIGATION FUNCTION: HANDLE NAVIGATION AND SUBMISSION
  **************************************************************/
 function navigateSkill(){
   // Validate current question before proceeding
@@ -578,11 +523,11 @@ function navigateSkill(){
 }
 
 /**************************************************************
- * 16) VALIDATE CURRENT QUESTION FUNCTION
+ * 14) VALIDATE CURRENT QUESTION FUNCTION
  **************************************************************/
 function validateCurrentQuestion(){
-  const skillIndex = Math.floor(currentQuestionIndex / 5);
-  const questionNum = currentQuestionIndex % 5;
+  const skillIndex = Math.floor(currentQuestionIndex / 3);
+  const questionNum = currentQuestionIndex % 3;
   const skill = selectedSkills[skillIndex];
 
   switch(questionNum){
@@ -590,25 +535,19 @@ function validateCurrentQuestion(){
       return document.querySelector(`input[name="Q1-skill${skillIndex}"]:checked`) !== null;
     case 1: // Q2 => PROFICIENCY STATEMENT
       return document.querySelector(`input[name="Q2-skill${skillIndex}"]:checked`) !== null;
-    case 2: // Q3 => SHORT RESPONSE #1
-      return document.querySelector(`textarea[name="Q3-skill${skillIndex}"]`).value.trim() !== "";
-    case 3: // Q4 => SHORT RESPONSE #2
+    case 2: // Q4 => SHORT RESPONSE
       return document.querySelector(`textarea[name="Q4-skill${skillIndex}"]`).value.trim() !== "";
-    case 4: // Q5 => IB Learner Trait
-      const selectVal = document.querySelector(`select[name="Q5-select${skillIndex}"]`).value;
-      const textVal = document.querySelector(`textarea[name="Q5-skill${skillIndex}"]`).value.trim();
-      return selectVal !== "" && textVal !== "";
     default:
       return false;
   }
 }
 
 /**************************************************************
- * 17) SAVE CURRENT RESPONSE FUNCTION
+ * 15) SAVE CURRENT RESPONSE FUNCTION
  **************************************************************/
 function saveCurrentResponse(){
-  const skillIndex = Math.floor(currentQuestionIndex / 5);
-  const questionNum = currentQuestionIndex % 5;
+  const skillIndex = Math.floor(currentQuestionIndex / 3);
+  const questionNum = currentQuestionIndex % 3;
   const skill = selectedSkills[skillIndex];
 
   if(!responses[skill]) {
@@ -624,18 +563,9 @@ function saveCurrentResponse(){
       const q2 = document.querySelector(`input[name="Q2-skill${skillIndex}"]:checked`).value;
       responses[skill].q2 = q2;
       break;
-    case 2: // Q3 => SHORT RESPONSE #1
-      const q3 = document.querySelector(`textarea[name="Q3-skill${skillIndex}"]`).value.trim();
-      responses[skill].q3 = q3;
-      break;
-    case 3: // Q4 => SHORT RESPONSE #2
+    case 2: // Q4 => SHORT RESPONSE
       const q4 = document.querySelector(`textarea[name="Q4-skill${skillIndex}"]`).value.trim();
       responses[skill].q4 = q4;
-      break;
-    case 4: // Q5 => IB Learner Trait
-      const q5_sel = document.querySelector(`select[name="Q5-select${skillIndex}"]`).value;
-      const q5_txt = document.querySelector(`textarea[name="Q5-skill${skillIndex}"]`).value.trim();
-      responses[skill].q5 = `${q5_sel} - ${q5_txt}`;
       break;
     default:
       console.error("Unknown question number:", questionNum);
@@ -643,10 +573,10 @@ function saveCurrentResponse(){
 }
 
 /**************************************************************
- * 18) HANDLE FINAL SUBMIT FUNCTION: SEND DATA TO GOOGLE SHEET
+ * 16) HANDLE FINAL SUBMIT FUNCTION: SEND DATA TO GOOGLE SHEET
  **************************************************************/
 function handleFinalSubmit(){
-  // Gather user info from page0 (Student Info)
+  // Gather user info from page1 (Student Info)
   const studentID = document.getElementById("studentID").value.trim();
   const lastName  = document.getElementById("lastName").value.trim();
   const firstName = document.getElementById("firstName").value.trim();
@@ -688,9 +618,7 @@ function handleFinalSubmit(){
       skill,
       q1: responses[skill]?.q1 || "",
       q2: responses[skill]?.q2 || "",
-      q3: responses[skill]?.q3 || "",
-      q4: responses[skill]?.q4 || "",
-      q5: responses[skill]?.q5 || ""
+      q4: responses[skill]?.q4 || ""
     };
 
     tasks.push(submitDataForSkill(dataObj));
@@ -710,7 +638,7 @@ function handleFinalSubmit(){
 }
 
 /**************************************************************
- * 19) SUBMIT DATA FUNCTION: SEND DATA TO GOOGLE APPS SCRIPT
+ * 17) SUBMIT DATA FUNCTION: SEND DATA TO GOOGLE APPS SCRIPT
  **************************************************************/
 function submitDataForSkill(obj){
   return fetch(SCRIPT_URL, {
@@ -736,14 +664,14 @@ function submitDataForSkill(obj){
 }
 
 /**************************************************************
- * 20) PICK RANDOM ELEMENT FROM ARRAY FUNCTION
+ * 18) PICK RANDOM ELEMENT FROM ARRAY FUNCTION
  **************************************************************/
 function pickRandom(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
 /**************************************************************
- * 21) VALIDATE STUDENT FORM FUNCTION: PAGE 0
+ * 19) VALIDATE STUDENT FORM FUNCTION: PAGE 0
  **************************************************************/
 function validateStudentForm() {
   const studentID = document.getElementById("studentID").value.trim();
