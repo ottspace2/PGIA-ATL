@@ -32,9 +32,9 @@ document.addEventListener('DOMContentLoaded', function() {
   // Enhance date field interaction
   const dateField = document.getElementById('dateField');
   dateField.addEventListener('click', function() {
-    // For browsers that support showPicker()
-    if (typeof this.showPicker === 'function') {
-      this.showPicker();
+    // For browsers that support showPicker
+    if (typeof dateField.showPicker === 'function') {
+      dateField.showPicker();
     }
   });
 });
@@ -295,7 +295,7 @@ function goToPage(num){
 }
 
 /**************************************************************
- * 6) POPULATE SKILLS SELECTION ON PAGE 2
+ * 6) POPULATE SKILLS SELECTION FUNCTION
  **************************************************************/
 function populateSkillsSelection(){
   const clustersChosen = Array.from(
@@ -305,6 +305,11 @@ function populateSkillsSelection(){
   const skillsDiv = document.getElementById("skillsSelection");
   skillsDiv.innerHTML = "";
 
+  if(clustersChosen.length === 0){
+    skillsDiv.innerHTML = "<p>No clusters selected. Please go back and select at least one cluster.</p>";
+    return;
+  }
+
   const clusterToCategory = {};
   // Preprocess for efficient lookup
   Object.entries(categoriesAndSkills).forEach(([cat, clusters]) => {
@@ -312,11 +317,6 @@ function populateSkillsSelection(){
       clusterToCategory[cluName] = { category: cat, skills: skills };
     });
   });
-
-  if(clustersChosen.length === 0){
-    skillsDiv.innerHTML = "<p>No clusters selected.</p>";
-    return;
-  }
 
   clustersChosen.forEach(cluster => {
     const { category, skills } = clusterToCategory[cluster];
@@ -364,7 +364,7 @@ function startSelfAssessment(){
 }
 
 /**************************************************************
- * 8) RENDER SINGLE QUESTION FUNCTION
+ * 8) RENDER ASSESSMENT QUESTION FUNCTION
  **************************************************************/
 function renderAssessmentQuestion(qIndex){
   const skillIndex = Math.floor(qIndex / 5);
@@ -542,7 +542,7 @@ function showIbLearnerProfileQ5(container, skillIndex, skill){
 }
 
 /**************************************************************
- * 14) NEXT BUTTON NAVIGATION
+ * 14) NEXT BUTTON NAVIGATION FUNCTION
  **************************************************************/
 function navigateSkill(){
   // Validate current question before proceeding
@@ -565,7 +565,7 @@ function navigateSkill(){
 }
 
 /**************************************************************
- * 15) VALIDATE CURRENT QUESTION
+ * 15) VALIDATE CURRENT QUESTION FUNCTION
  **************************************************************/
 function validateCurrentQuestion(){
   const skillIndex = Math.floor(currentQuestionIndex / 5);
@@ -591,7 +591,7 @@ function validateCurrentQuestion(){
 }
 
 /**************************************************************
- * 16) SAVE CURRENT RESPONSE
+ * 16) SAVE CURRENT RESPONSE FUNCTION
  **************************************************************/
 function saveCurrentResponse(){
   const skillIndex = Math.floor(currentQuestionIndex / 5);
@@ -630,7 +630,7 @@ function saveCurrentResponse(){
 }
 
 /**************************************************************
- * 17) HANDLE FINAL SUBMIT => POST MULTIPLE ROWS (EACH SKILL)
+ * 17) HANDLE FINAL SUBMIT FUNCTION
  **************************************************************/
 function handleFinalSubmit(){
   // Gather user info from page0
@@ -643,13 +643,6 @@ function handleFinalSubmit(){
   const cohort    = document.getElementById("cohortYear").value.trim();
   const advisory  = document.getElementById("advisoryGroup").value.trim();
   const teacher   = document.getElementById("teacher").value.trim();
-
-  // Basic validation to ensure required fields are filled
-  if(!studentID || !lastName || !firstName){
-    alert("Please complete all required fields before submitting.");
-    goToPage(0);
-    return;
-  }
 
   let tasks = [];
 
@@ -703,7 +696,7 @@ function handleFinalSubmit(){
 }
 
 /**************************************************************
- * 18) SUBMIT ROW TO GOOGLE APPS SCRIPT
+ * 18) SUBMIT DATA TO GOOGLE APPS SCRIPT FUNCTION
  **************************************************************/
 function submitDataForSkill(obj){
   const scriptUrl = "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec"; // Replace with your deployment URL
@@ -723,6 +716,10 @@ function submitDataForSkill(obj){
     if(res.status !== "success"){
       throw new Error(res.message || "Unknown error from Apps Script");
     }
+  })
+  .catch(error => {
+    console.error("Error in submitDataForSkill:", error);
+    throw error; // Propagate error to Promise.all
   });
 }
 
