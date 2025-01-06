@@ -1,11 +1,11 @@
 /**************************************************************
- * 0) LANDING PAGE VALIDATION
+ * 0) INITIALIZATION: SET UP EVENT LISTENERS AFTER DOM LOADS
  **************************************************************/
 document.addEventListener('DOMContentLoaded', function() {
-  // Event listener for Continue button on Page 0
+  // Event listener for Continue button on Page 0 (Student Info)
   document.getElementById('continueButton').addEventListener('click', validateStudentForm);
 
-  // Event listeners for category checkboxes on Page 1
+  // Event listeners for category checkboxes on Page 1 (Categories & Clusters)
   const categoryCheckboxes = document.querySelectorAll('input[name="category"]');
   categoryCheckboxes.forEach(checkbox => {
     checkbox.addEventListener('change', function() {
@@ -23,16 +23,16 @@ document.addEventListener('DOMContentLoaded', function() {
     goToPage(2);
   });
 
-  // Event listener for Start Assessment button on Page 2
+  // Event listener for Start Assessment button on Page 2 (Skills Selection)
   document.getElementById('startAssessmentButton').addEventListener('click', startSelfAssessment);
 
-  // Event listener for Next button on Page 3
+  // Event listener for Next button on Page 3 (Self-Assessment)
   document.getElementById('nextButton').addEventListener('click', navigateSkill);
 
-  // Enhance date field interaction
+  // Enhance date field interaction: Clicking anywhere on the date field triggers the date picker
   const dateField = document.getElementById('dateField');
   dateField.addEventListener('click', function() {
-    // For browsers that support showPicker
+    // For browsers that support showPicker (Chrome, Edge, etc.)
     if (typeof dateField.showPicker === 'function') {
       dateField.showPicker();
     }
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /**************************************************************
- * 1) DATA STRUCTURES
+ * 1) DEFINING CATEGORIES & SKILLS
  **************************************************************/
 const categoriesAndSkills = {
   Communication: {
@@ -218,7 +218,7 @@ const categoriesAndSkills = {
 };
 
 /**************************************************************
- * 2) PROFICIENCY LEVELS
+ * 2) PROFIENCY LEVEL STATEMENTS
  **************************************************************/
 const proficiencyLevels = {
   "Novice/Beginning (Observation)": [
@@ -272,8 +272,14 @@ let currentQuestionIndex = 0;
 let responses = {}; // To store user responses
 let proficiencyStatements = {}; // To store random proficiency statements per skill
 
+// Secret Token (Ensure this matches the one set in your Google Apps Script)
+const SECRET_TOKEN = "your-secret-token"; // Replace with your actual secret token
+
+// Google Apps Script Web App URL
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzFqBZxSilArZ-iGaxBC1TA2DcdpJ_T-7AfiWvKwUE__R8PIfc0QFNtd9Ak8-T0BwV07g/exec";
+
 /**************************************************************
- * 5) TOGGLE DROPDOWN FUNCTION
+ * 5) TOGGLE DROPDOWN FUNCTION: SHOW/HIDE CLUSTERS
  **************************************************************/
 function toggleDropdown(id){
   const dd = document.getElementById(id);
@@ -282,11 +288,10 @@ function toggleDropdown(id){
     return;
   }
   dd.classList.toggle('show');
-  console.log(`Toggled dropdown: ${id}`);
 }
 
 /**************************************************************
- * 6) PAGE NAVIGATION FUNCTION
+ * 6) PAGE NAVIGATION FUNCTION: SWITCH BETWEEN SECTIONS
  **************************************************************/
 function goToPage(num){
   document.querySelectorAll("section").forEach(sec => sec.classList.add('hidden'));
@@ -301,14 +306,12 @@ function goToPage(num){
 }
 
 /**************************************************************
- * 7) POPULATE SKILLS SELECTION FUNCTION
+ * 7) POPULATE SKILLS SELECTION FUNCTION: PAGE 2
  **************************************************************/
 function populateSkillsSelection(){
   const clustersChosen = Array.from(
     document.querySelectorAll('input[name="cluster"]:checked')
   ).map(i => i.value);
-
-  console.log("Clusters chosen:", clustersChosen);
 
   const skillsDiv = document.getElementById("skillsSelection");
   skillsDiv.innerHTML = "";
@@ -327,7 +330,6 @@ function populateSkillsSelection(){
   });
 
   clustersChosen.forEach(cluster => {
-    console.log(`Processing cluster: ${cluster}`);
     const { category, skills } = clusterToCategory[cluster];
     if(category && skills){
       const catDiv = document.createElement("div");
@@ -346,7 +348,7 @@ function populateSkillsSelection(){
 }
 
 /**************************************************************
- * 8) START SELF-ASSESSMENT FUNCTION
+ * 8) START SELF-ASSESSMENT FUNCTION: INITIATE ASSESSMENT
  **************************************************************/
 function startSelfAssessment(){
   selectedSkills = Array.from(
@@ -359,7 +361,7 @@ function startSelfAssessment(){
   }
 
   // Initialize proficiency statements for consistency
-  selectedSkills.forEach((skill, index) => {
+  selectedSkills.forEach((skill) => {
     proficiencyStatements[skill] = {};
     Object.keys(proficiencyLevels).forEach(level => {
       proficiencyStatements[skill][level] = pickRandom(proficiencyLevels[level]);
@@ -375,14 +377,12 @@ function startSelfAssessment(){
 }
 
 /**************************************************************
- * 9) RENDER ASSESSMENT QUESTION FUNCTION
+ * 9) RENDER ASSESSMENT QUESTION FUNCTION: PAGE 3
  **************************************************************/
 function renderAssessmentQuestion(qIndex){
   const skillIndex = Math.floor(qIndex / 5);
   const questionNum = qIndex % 5;
   const skill = selectedSkills[skillIndex];
-
-  console.log(`Rendering question ${qIndex + 1} for skill: ${skill}`);
 
   const container = document.getElementById("selfAssessment");
   container.innerHTML = "";
@@ -402,27 +402,27 @@ function renderAssessmentQuestion(qIndex){
   p.className = "question";
 
   switch(questionNum){
-    case 0: // Q1 => LIKERT
+    case 0: // Q1 => LIKERT SCALE
       p.textContent = `At the start of this unit, I would describe my ability to "${skill}" as...`;
       skillContainer.appendChild(p);
-      showLikertQuestion(skillContainer, skillIndex, skill);
+      showLikertQuestion(skillContainer, skillIndex);
       break;
-    case 1: // Q2 => PROFICIENCY
+    case 1: // Q2 => PROFICIENCY STATEMENT
       p.textContent = `Reflecting on your progress this unit, select the statement that best applies to your current ability to "${skill}"...`;
       skillContainer.appendChild(p);
       showProficiencyQuestion(skillContainer, skillIndex, skill);
       break;
-    case 2: // Q3 => SHORT RESP #1
+    case 2: // Q3 => SHORT RESPONSE #1
       p.textContent = `Describe one way I used ${skill} and what could I do to improve in the future?`;
       skillContainer.appendChild(p);
       showShortResponseQ3(skillContainer, skillIndex, skill);
       break;
-    case 3: // Q4 => SHORT RESP #2
+    case 3: // Q4 => SHORT RESPONSE #2
       p.textContent = `What is one challenge you experienced related to ${skill}, and how did you overcome it?`;
       skillContainer.appendChild(p);
       showShortResponseQ4(skillContainer, skillIndex, skill);
       break;
-    case 4: // Q5 => IB Learner trait
+    case 4: // Q5 => IB Learner Trait
       p.textContent = `If someone were observing you practicing this skill, which IB learner profile trait would they say you demonstrated? Why?`;
       skillContainer.appendChild(p);
       showIbLearnerProfileQ5(skillContainer, skillIndex, skill);
@@ -436,9 +436,9 @@ function renderAssessmentQuestion(qIndex){
 }
 
 /**************************************************************
- * 10) Q1 => LIKERT SCALE QUESTION
+ * 10) Q1 => LIKERT SCALE QUESTION FUNCTION
  **************************************************************/
-function showLikertQuestion(container, skillIndex, skill){
+function showLikertQuestion(container, skillIndex){
   const scaleDiv = document.createElement("div");
   scaleDiv.classList.add("scaleDiv");
 
@@ -477,7 +477,7 @@ function showLikertQuestion(container, skillIndex, skill){
 }
 
 /**************************************************************
- * 11) Q2 => PROFICIENCY QUESTION
+ * 11) Q2 => PROFICIENCY STATEMENT QUESTION FUNCTION
  **************************************************************/
 function showProficiencyQuestion(container, skillIndex, skill){
   const opsDiv = document.createElement("div");
@@ -500,7 +500,7 @@ function showProficiencyQuestion(container, skillIndex, skill){
 }
 
 /**************************************************************
- * 12) Q3 => SHORT RESPONSE QUESTION #1
+ * 12) Q3 => SHORT RESPONSE QUESTION #1 FUNCTION
  **************************************************************/
 function showShortResponseQ3(container, skillIndex, skill){
   const ta = document.createElement("textarea");
@@ -512,7 +512,7 @@ function showShortResponseQ3(container, skillIndex, skill){
 }
 
 /**************************************************************
- * 13) Q4 => SHORT RESPONSE QUESTION #2
+ * 13) Q4 => SHORT RESPONSE QUESTION #2 FUNCTION
  **************************************************************/
 function showShortResponseQ4(container, skillIndex, skill){
   const ta = document.createElement("textarea");
@@ -524,7 +524,7 @@ function showShortResponseQ4(container, skillIndex, skill){
 }
 
 /**************************************************************
- * 14) Q5 => IB Learner Profile TRAIT QUESTION
+ * 14) Q5 => IB LEARNER TRAIT QUESTION FUNCTION
  **************************************************************/
 function showIbLearnerProfileQ5(container, skillIndex, skill){
   const select = document.createElement("select");
@@ -555,7 +555,7 @@ function showIbLearnerProfileQ5(container, skillIndex, skill){
 }
 
 /**************************************************************
- * 15) NEXT BUTTON NAVIGATION FUNCTION
+ * 15) NEXT BUTTON NAVIGATION FUNCTION: HANDLE NAVIGATION AND SUBMISSION
  **************************************************************/
 function navigateSkill(){
   // Validate current question before proceeding
@@ -586,15 +586,15 @@ function validateCurrentQuestion(){
   const skill = selectedSkills[skillIndex];
 
   switch(questionNum){
-    case 0: // Q1 => LIKERT
+    case 0: // Q1 => LIKERT SCALE
       return document.querySelector(`input[name="Q1-skill${skillIndex}"]:checked`) !== null;
-    case 1: // Q2 => PROFICIENCY
+    case 1: // Q2 => PROFICIENCY STATEMENT
       return document.querySelector(`input[name="Q2-skill${skillIndex}"]:checked`) !== null;
-    case 2: // Q3 => SHORT RESP #1
+    case 2: // Q3 => SHORT RESPONSE #1
       return document.querySelector(`textarea[name="Q3-skill${skillIndex}"]`).value.trim() !== "";
-    case 3: // Q4 => SHORT RESP #2
+    case 3: // Q4 => SHORT RESPONSE #2
       return document.querySelector(`textarea[name="Q4-skill${skillIndex}"]`).value.trim() !== "";
-    case 4: // Q5 => IB Learner trait
+    case 4: // Q5 => IB Learner Trait
       const selectVal = document.querySelector(`select[name="Q5-select${skillIndex}"]`).value;
       const textVal = document.querySelector(`textarea[name="Q5-skill${skillIndex}"]`).value.trim();
       return selectVal !== "" && textVal !== "";
@@ -616,23 +616,23 @@ function saveCurrentResponse(){
   }
 
   switch(questionNum){
-    case 0: // Q1 => LIKERT
+    case 0: // Q1 => LIKERT SCALE
       const q1 = document.querySelector(`input[name="Q1-skill${skillIndex}"]:checked`).value;
       responses[skill].q1 = q1;
       break;
-    case 1: // Q2 => PROFICIENCY
+    case 1: // Q2 => PROFICIENCY STATEMENT
       const q2 = document.querySelector(`input[name="Q2-skill${skillIndex}"]:checked`).value;
       responses[skill].q2 = q2;
       break;
-    case 2: // Q3 => SHORT RESP #1
+    case 2: // Q3 => SHORT RESPONSE #1
       const q3 = document.querySelector(`textarea[name="Q3-skill${skillIndex}"]`).value.trim();
       responses[skill].q3 = q3;
       break;
-    case 3: // Q4 => SHORT RESP #2
+    case 3: // Q4 => SHORT RESPONSE #2
       const q4 = document.querySelector(`textarea[name="Q4-skill${skillIndex}"]`).value.trim();
       responses[skill].q4 = q4;
       break;
-    case 4: // Q5 => IB Learner trait
+    case 4: // Q5 => IB Learner Trait
       const q5_sel = document.querySelector(`select[name="Q5-select${skillIndex}"]`).value;
       const q5_txt = document.querySelector(`textarea[name="Q5-skill${skillIndex}"]`).value.trim();
       responses[skill].q5 = `${q5_sel} - ${q5_txt}`;
@@ -640,15 +640,13 @@ function saveCurrentResponse(){
     default:
       console.error("Unknown question number:", questionNum);
   }
-
-  console.log(`Saved response for skill "${skill}":`, responses[skill]);
 }
 
 /**************************************************************
- * 18) HANDLE FINAL SUBMIT FUNCTION
+ * 18) HANDLE FINAL SUBMIT FUNCTION: SEND DATA TO GOOGLE SHEET
  **************************************************************/
 function handleFinalSubmit(){
-  // Gather user info from page0
+  // Gather user info from page0 (Student Info)
   const studentID = document.getElementById("studentID").value.trim();
   const lastName  = document.getElementById("lastName").value.trim();
   const firstName = document.getElementById("firstName").value.trim();
@@ -661,7 +659,7 @@ function handleFinalSubmit(){
 
   let tasks = [];
 
-  selectedSkills.forEach((skill, index) => {
+  selectedSkills.forEach((skill) => {
     // Find category & cluster from the skill
     let foundCategory = "";
     let foundCluster = "";
@@ -698,6 +696,7 @@ function handleFinalSubmit(){
     tasks.push(submitDataForSkill(dataObj));
   });
 
+  // Execute all submissions concurrently
   Promise.all(tasks)
     .then(()=>{
       alert("All self-assessments submitted successfully!");
@@ -711,12 +710,10 @@ function handleFinalSubmit(){
 }
 
 /**************************************************************
- * 19) SUBMIT DATA TO GOOGLE APPS SCRIPT FUNCTION
+ * 19) SUBMIT DATA FUNCTION: SEND DATA TO GOOGLE APPS SCRIPT
  **************************************************************/
 function submitDataForSkill(obj){
-  const scriptUrl = "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec"; // Replace with your deployment URL
-
-  return fetch(scriptUrl, {
+  return fetch(SCRIPT_URL, {
     method:"POST",
     headers:{"Content-Type":"application/json"},
     body: JSON.stringify(obj)
@@ -739,14 +736,14 @@ function submitDataForSkill(obj){
 }
 
 /**************************************************************
- * 20) RANDOM ARRAY PICK FUNCTION
+ * 20) PICK RANDOM ELEMENT FROM ARRAY FUNCTION
  **************************************************************/
 function pickRandom(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
 /**************************************************************
- * 21) VALIDATE STUDENT FORM FUNCTION
+ * 21) VALIDATE STUDENT FORM FUNCTION: PAGE 0
  **************************************************************/
 function validateStudentForm() {
   const studentID = document.getElementById("studentID").value.trim();
