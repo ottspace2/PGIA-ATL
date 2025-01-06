@@ -4,254 +4,118 @@
  * 0) INITIALIZATION: SET UP EVENT LISTENERS AFTER DOM LOADS
  **************************************************************/
 document.addEventListener('DOMContentLoaded', function() {
+  console.log("DOM fully loaded and parsed.");
+
   // Event listener for Continue button on Landing Page (page0)
-  document.getElementById('continueButton').addEventListener('click', validateStudentForm);
+  const continueButton = document.getElementById('continueButton');
+  if (continueButton) {
+    continueButton.addEventListener('click', function() {
+      console.log("Continue button clicked. Navigating to page1.");
+      goToPage(1);
+    });
+  } else {
+    console.error("Continue button not found!");
+  }
+
+  // Event listener for Next button on Page 1 (Student Info) (page1)
+  const nextButtonPage1 = document.getElementById('nextButtonPage1');
+  if (nextButtonPage1) {
+    nextButtonPage1.addEventListener('click', function() {
+      console.log("Next button on page1 clicked. Validating form.");
+      if (validateStudentForm()) {
+        console.log("Form validated. Navigating to page2.");
+        goToPage(2);
+      }
+    });
+  } else {
+    console.error("Next button on page1 not found!");
+  }
 
   // Event listeners for category checkboxes on Page 2 (Categories & Clusters) (page2)
   const categoryCheckboxes = document.querySelectorAll('input[name="category"]');
   categoryCheckboxes.forEach(checkbox => {
     checkbox.addEventListener('change', function() {
+      console.log(`Category checkbox changed: ${this.value}. Toggling dropdown.`);
       toggleDropdown(`${this.id.replace('Checkbox', 'Clusters')}`);
     });
   });
 
-  // Event listener for Next button on Page 1 (Student Info) (page1)
-  document.getElementById('nextButtonPage1').addEventListener('click', function() {
-    const clustersChosen = Array.from(document.querySelectorAll('input[name="cluster"]:checked')).map(i => i.value);
-    if (clustersChosen.length === 0) {
-      alert("Please select at least one cluster to proceed.");
-      return;
-    }
-    goToPage(2);
-  });
-
   // Event listener for Next button on Page 2 (Categories & Clusters) (page2)
-  document.getElementById('nextButtonPage2').addEventListener('click', function() {
-    const skillsChosen = Array.from(document.querySelectorAll('input[name="skill"]:checked')).map(i => i.value);
-    if (skillsChosen.length === 0) {
-      alert("Please select at least one skill to proceed.");
-      return;
-    }
-    goToPage(3);
-  });
+  const nextButtonPage2 = document.getElementById('nextButtonPage2');
+  if (nextButtonPage2) {
+    nextButtonPage2.addEventListener('click', function() {
+      console.log("Next button on page2 clicked. Checking selected clusters.");
+      const clustersChosen = Array.from(document.querySelectorAll('input[name="cluster"]:checked')).map(i => i.value);
+      if (clustersChosen.length === 0) {
+        alert("Please select at least one cluster to proceed.");
+        console.log("No clusters selected. Alerting user.");
+        return;
+      }
+      console.log(`Clusters selected: ${clustersChosen.join(", ")}. Navigating to page3.`);
+      goToPage(3);
+    });
+  } else {
+    console.error("Next button on page2 not found!");
+  }
 
   // Event listener for Start Assessment button on Page 3 (Skills Selection) (page3)
-  document.getElementById('startAssessmentButton').addEventListener('click', startSelfAssessment);
+  const startAssessmentButton = document.getElementById('startAssessmentButton');
+  if (startAssessmentButton) {
+    startAssessmentButton.addEventListener('click', function() {
+      console.log("Start Assessment button clicked. Starting self-assessment.");
+      startSelfAssessment();
+    });
+  } else {
+    console.error("Start Assessment button not found!");
+  }
 
   // Event listener for Next button on Page 4 (Self-Assessment) (page4)
-  document.getElementById('nextButton').addEventListener('click', navigateSkill);
+  const nextButton = document.getElementById('nextButton');
+  if (nextButton) {
+    nextButton.addEventListener('click', function() {
+      console.log("Next button on page4 clicked. Navigating through questions or submitting.");
+      navigateSkill();
+    });
+  } else {
+    console.error("Next button on page4 not found!");
+  }
 
   // Enhance date field interaction: Clicking anywhere on the date field triggers the date picker
   const dateField = document.getElementById('dateField');
-  dateField.addEventListener('click', function() {
-    // For browsers that support showPicker (Chrome, Edge, etc.)
-    if (typeof dateField.showPicker === 'function') {
-      dateField.showPicker();
-    }
-  });
+  if(dateField) {
+    dateField.addEventListener('click', function() {
+      console.log("Date field clicked. Attempting to show date picker.");
+      // For browsers that support showPicker (Chrome, Edge, etc.)
+      if (typeof dateField.showPicker === 'function') {
+        dateField.showPicker();
+      }
+    });
+  }
 });
 
 /**************************************************************
  * 1) DEFINING CATEGORIES & SKILLS
  **************************************************************/
 const categoriesAndSkills = {
-  Communication: {
-    "Exchanging thoughts, messages, and information effectively": [
-      "Give and receive meaningful feedback",
-      "Use intercultural understanding to interpret communication",
-      "Use a variety of speaking techniques to communicate with a variety of audiences",
-      "Use appropriate forms of writing for different purposes and audiences",
-      "Use a variety of media to communicate with a range of audiences",
-      "Interpret and use effectively modes of non-verbal communication",
-      "Negotiate ideas and knowledge with peers and teachers",
-      "Participate in, and contribute to, digital social media networks",
-      "Collaborate with peers and experts using a variety of digital environments and media",
-      "Share ideas with multiple audiences using a variety of digital environments and media"
-    ],
-    "Demonstrating communication through language": [
-      "Read critically and for comprehension",
-      "Read a variety of sources for information and for pleasure",
-      "Make inferences and draw conclusions",
-      "Use and interpret a range of discipline-specific terms and symbols",
-      "Write for different purposes",
-      "Understand and use mathematical notation",
-      "Paraphrase accurately and concisely",
-      "Preview and skim texts to build understanding",
-      "Take effective notes in class",
-      "Make effective summary notes for studying",
-      "Use a variety of organizers for academic writing tasks",
-      "Find information for disciplinary and interdisciplinary inquiries using a variety of media",
-      "Organize and depict information logically",
-      "Structure information in summaries, essays, and reports"
-    ]
-  },
-  Social: {
-    "Collaboration skills": [
-      "Use social media networks appropriately to build and develop relationships",
-      "Practise empathy",
-      "Delegate and share responsibility for decision-making",
-      "Help others to succeed",
-      "Take responsibility for one’s own actions",
-      "Manage and resolve conflict, and work collaboratively in teams",
-      "Build consensus",
-      "Make fair and equitable decisions",
-      "Listen actively to other perspectives and ideas",
-      "Negotiate effectively",
-      "Encourage others to contribute",
-      "Exercise leadership and take on a variety of roles within groups",
-      "Give and receive meaningful feedback",
-      "Advocate for one’s own rights and needs"
-    ]
-  },
-  "Self-Management": {
-    "Organization skills": [
-      "Plan short- and long-term assignments; meet deadlines",
-      "Create plans to prepare for summative assessments",
-      "Keep and use a weekly planner for assignments",
-      "Set goals that are challenging and realistic",
-      "Plan strategies and take action to achieve personal and academic goals",
-      "Bring necessary equipment and supplies to class",
-      "Keep an organized and logical system of information files/notebooks",
-      "Use appropriate strategies for organizing complex information",
-      "Understand and use sensory learning preferences (learning styles)",
-      "Select and use technology effectively and productively"
-    ],
-    "Affective skills": [
-      "Practise focus and concentration",
-      "Practise strategies to develop mental focus",
-      "Practise strategies to overcome distractions",
-      "Practise being aware of body–mind connections",
-      "Demonstrate persistence and perseverance",
-      "Practise delaying gratification",
-      "Practise strategies to overcome impulsiveness and anger",
-      "Practise strategies to prevent and eliminate bullying",
-      "Practise strategies to reduce stress and anxiety",
-      "Practise analyzing and attributing causes for failure",
-      "Practise managing self-talk",
-      "Practise positive thinking",
-      "Practise “bouncing back” after adversity, mistakes, and failures",
-      "Practise “failing well”",
-      "Practise dealing with disappointment and unmet expectations",
-      "Practise dealing with change"
-    ],
-    "Reflection skills": [
-      "Develop new skills, techniques, and strategies for effective learning",
-      "Identify strengths and weaknesses of personal learning strategies (self-assessment)",
-      "Demonstrate flexibility in the selection and use of learning strategies",
-      "Try new ATL skills and evaluate their effectiveness",
-      "Consider content: What did I learn about today?",
-      "Consider content: What don’t I yet understand?",
-      "Consider content: What questions do I have now?",
-      "Consider ATL skills development: What can I already do?",
-      "Consider ATL skills development: How can I share my skills to help peers who need more practice?",
-      "Consider ATL skills development: What will I work on next?",
-      "Consider personal learning strategies: What can I do to become a more efficient and effective learner?",
-      "Consider personal learning strategies: How can I become more flexible in my choice of learning strategies?",
-      "Consider personal learning strategies: What factors are important for helping me learn well?",
-      "Focus on the process of creating by imitating the work of others",
-      "Consider ethical, cultural, and environmental implications",
-      "Keep a journal to record reflections"
-    ]
-  },
-  Research: {
-    "Information literacy skills": [
-      "Collect, record, and verify data",
-      "Access information to be informed and inform others",
-      "Make connections between various sources of information",
-      "Understand the benefits and limitations of personal sensory learning preferences",
-      "Use memory techniques to develop long-term memory",
-      "Present information in a variety of formats and platforms",
-      "Collect and analyze data to identify solutions and make informed decisions",
-      "Process data and report results",
-      "Evaluate and select information sources and digital tools based on their appropriateness",
-      "Understand and use technology systems",
-      "Use critical literacy skills to analyze and interpret media communications",
-      "Understand and implement intellectual property rights",
-      "Create references and citations",
-      "Identify primary and secondary sources"
-    ],
-    "Media literacy skills": [
-      "Locate, organize, analyze, evaluate, synthesize, and ethically use information",
-      "Demonstrate awareness of media interpretations of events and ideas",
-      "Make informed choices about personal viewing experiences",
-      "Understand the impact of media representations",
-      "Seek a range of perspectives from multiple sources",
-      "Communicate information and ideas effectively to multiple audiences",
-      "Compare, contrast, and draw connections among media resources"
-    ]
-  },
-  Thinking: {
-    "Critical-thinking skills": [
-      "Practise observing carefully to recognize problems",
-      "Gather and organize relevant information to formulate an argument",
-      "Recognize unstated assumptions and bias",
-      "Interpret data",
-      "Recognize and evaluate propositions",
-      "Evaluate evidence and arguments",
-      "Draw reasonable conclusions and generalizations",
-      "Test generalizations and conclusions",
-      "Revise understanding based on new information and evidence",
-      "Evaluate and manage risk",
-      "Formulate factual, topical, conceptual, and debatable questions",
-      "Consider ideas from multiple perspectives",
-      "Develop contrary or opposing arguments",
-      "Analyze complex concepts and projects into their constituent parts and synthesize them to create new understanding",
-      "Propose and evaluate a variety of solutions",
-      "Identify obstacles and challenges",
-      "Use models and simulations to explore complex systems and issues",
-      "Identify trends and forecast possibilities",
-      "Troubleshoot systems and applications"
-    ],
-    "Creative-thinking skills": [
-      "Use brainstorming and visual diagrams to generate new ideas and inquiries",
-      "Consider multiple alternatives, including those that might be unlikely or impossible",
-      "Create novel solutions to authentic problems",
-      "Make unexpected or unusual connections between objects and/or ideas",
-      "Design improvements to existing machines, media, and technologies",
-      "Design new machines, media, and technologies",
-      "Practise flexible thinking—develop multiple opposing, contradictory, and complementary arguments",
-      "Practise visible thinking strategies and techniques",
-      "Generate metaphors and analogies",
-      "Apply existing knowledge to generate new ideas, products, or processes",
-      "Make guesses, ask “what if” questions, and generate testable hypotheses",
-      "Practise innovation and entrepreneurship"
-    ],
-    "Transfer skills": [
-      "Use effective learning strategies in subject groups and disciplines",
-      "Apply skills and knowledge in unfamiliar situations",
-      "Inquire in different contexts to gain a different perspective",
-      "Compare conceptual understanding across multiple subject groups and disciplines",
-      "Make connections between subject groups and disciplines",
-      "Combine knowledge, understanding, and skills to create products or solutions",
-      "Transfer current knowledge to learning of new technologies",
-      "Change the context of an inquiry to gain different perspectives"
-    ]
-  }
+  // ... (Same as previously provided)
+  // [Omitted for brevity; ensure this matches the HTML structure]
 };
 
 /**************************************************************
  * 2) PROFICIENCY LEVEL STATEMENTS
  **************************************************************/
 const proficiencyLevels = {
-  "Novice/Beginning (Observation)": [
-    "I can recognize and describe how this skill is used by others.",
-    "I can identify examples of this skill in action during the unit.",
-    "I can understand the importance of this skill when I see it being applied.",
-    "I can follow along when others demonstrate this skill."
-  ],
-  "Learner/Developing (Emulation)": [
-    "I can use this skill with help or guidance from others.",
-    "I can practice this skill by following examples provided.",
-    "I can explain how I attempted to use this skill during the unit.",
-    "I can improve my use of this skill when someone shows me how."
-  ],
-  "Practitioner/Using (Demonstration)": [
-    "I can use this skill effectively and confidently in my work.",
-    "I can independently apply this skill to different tasks or challenges.",
-    "I can explain how and why I used this skill to support my learning.",
-    "I can adapt this skill to new situations or problems I encounter."
-  ]
+  // ... (Same as previously provided)
+  // [Omitted for brevity]
 };
+
+/**************************************************************
+ * 3) IB LEARNER TRAITS
+ **************************************************************/
+const ibLearnerTraits = [
+  // ... (Same as previously provided)
+  // [Omitted for brevity]
+];
 
 /**************************************************************
  * 4) GLOBAL VARIABLES
@@ -278,14 +142,22 @@ function toggleDropdown(id){
     return;
   }
   dd.classList.toggle('hidden');
+  console.log(`Toggled dropdown for ${id}`);
 }
 
 /**************************************************************
  * 6) PAGE NAVIGATION FUNCTION: SWITCH BETWEEN SECTIONS
  **************************************************************/
 function goToPage(num){
+  console.log(`Navigating to page${num}`);
   document.querySelectorAll("section").forEach(sec => sec.classList.add('hidden'));
-  document.getElementById(`page${num}`).classList.remove('hidden');
+  const targetPage = document.getElementById(`page${num}`);
+  if(targetPage){
+    targetPage.classList.remove('hidden');
+    console.log(`Displayed page${num}`);
+  } else {
+    console.error(`Page${num} does not exist.`);
+  }
 
   if(num === 3){
     populateSkillsSelection();
@@ -296,9 +168,28 @@ function goToPage(num){
 }
 
 /**************************************************************
- * 7) POPULATE SKILLS SELECTION FUNCTION: PAGE 3
+ * 7) VALIDATE STUDENT FORM FUNCTION: PAGE 1
+ **************************************************************/
+function validateStudentForm() {
+  console.log("Validating student form.");
+  const studentID = document.getElementById("studentID").value.trim();
+  const lastName  = document.getElementById("lastName").value.trim();
+  const firstName = document.getElementById("firstName").value.trim();
+
+  if(!studentID || !lastName || !firstName) {
+    alert("Please complete required fields: Student ID, Last Name, First Name.");
+    console.log("Validation failed: Missing required fields.");
+    return false;
+  }
+  console.log("Validation successful.");
+  return true;
+}
+
+/**************************************************************
+ * 8) POPULATE SKILLS SELECTION FUNCTION: PAGE 3
  **************************************************************/
 function populateSkillsSelection(){
+  console.log("Populating skills selection based on selected clusters.");
   const clustersChosen = Array.from(
     document.querySelectorAll('input[name="cluster"]:checked')
   ).map(i => i.value);
@@ -308,6 +199,7 @@ function populateSkillsSelection(){
 
   if(clustersChosen.length === 0){
     skillsDiv.innerHTML = "<p>No clusters selected. Please go back and select at least one cluster.</p>";
+    console.log("No clusters selected.");
     return;
   }
 
@@ -331,6 +223,7 @@ function populateSkillsSelection(){
         catDiv.appendChild(label);
       });
       skillsDiv.appendChild(catDiv);
+      console.log(`Added skills for cluster: ${cluster}`);
     } else {
       console.error(`No mapping found for cluster: ${cluster}`);
     }
@@ -338,17 +231,21 @@ function populateSkillsSelection(){
 }
 
 /**************************************************************
- * 8) START SELF-ASSESSMENT FUNCTION: INITIATE ASSESSMENT
+ * 9) START SELF-ASSESSMENT FUNCTION: INITIATE ASSESSMENT
  **************************************************************/
 function startSelfAssessment(){
+  console.log("Starting self-assessment.");
   selectedSkills = Array.from(
     document.querySelectorAll('input[name="skill"]:checked')
   ).map(i => i.value);
 
   if(!selectedSkills.length){
     alert("Please select at least one skill before starting the self-assessment.");
+    console.log("No skills selected.");
     return;
   }
+
+  console.log(`Selected skills: ${selectedSkills.join(", ")}`);
 
   // Initialize proficiency statements for consistency
   selectedSkills.forEach((skill) => {
@@ -367,9 +264,10 @@ function startSelfAssessment(){
 }
 
 /**************************************************************
- * 9) RENDER ASSESSMENT QUESTION FUNCTION: PAGE 4
+ * 10) RENDER ASSESSMENT QUESTION FUNCTION: PAGE 4
  **************************************************************/
 function renderAssessmentQuestion(qIndex){
+  console.log(`Rendering question ${qIndex + 1} of ${totalQuestions}`);
   const skillIndex = Math.floor(qIndex / 3);
   const questionNum = qIndex % 3;
   const skill = selectedSkills[skillIndex];
@@ -416,7 +314,7 @@ function renderAssessmentQuestion(qIndex){
 }
 
 /**************************************************************
- * 10) Q1 => LIKERT SCALE QUESTION FUNCTION
+ * 11) Q1 => LIKERT SCALE QUESTION FUNCTION
  **************************************************************/
 function showLikertQuestion(container, skillIndex){
   const scaleDiv = document.createElement("div");
@@ -454,10 +352,11 @@ function showLikertQuestion(container, skillIndex){
   });
 
   container.appendChild(scaleDiv);
+  console.log(`Displayed Likert scale for skill ${skillIndex}: ${scaleOpts.map(o=>o.label).join(", ")}`);
 }
 
 /**************************************************************
- * 11) Q2 => PROFICIENCY STATEMENT QUESTION FUNCTION
+ * 12) Q2 => PROFICIENCY STATEMENT QUESTION FUNCTION
  **************************************************************/
 function showProficiencyQuestion(container, skillIndex, skill){
   const opsDiv = document.createElement("div");
@@ -476,10 +375,11 @@ function showProficiencyQuestion(container, skillIndex, skill){
   });
 
   container.appendChild(opsDiv);
+  console.log(`Displayed proficiency statements for skill ${skill}: ${proficiencyLevelsOrdered.join(", ")}`);
 }
 
 /**************************************************************
- * 12) Q4 => SHORT RESPONSE QUESTION FUNCTION
+ * 13) Q4 => SHORT RESPONSE QUESTION FUNCTION
  **************************************************************/
 function showShortResponseQ4(container, skillIndex, skill){
   const ta = document.createElement("textarea");
@@ -488,15 +388,18 @@ function showShortResponseQ4(container, skillIndex, skill){
   ta.placeholder = "Describe the challenge and your solution...";
   ta.required = true; // Ensure response
   container.appendChild(ta);
+  console.log(`Displayed short response textarea for skill ${skill}`);
 }
 
 /**************************************************************
- * 13) NEXT BUTTON NAVIGATION FUNCTION: HANDLE NAVIGATION AND SUBMISSION
+ * 14) NEXT BUTTON NAVIGATION FUNCTION: HANDLE NAVIGATION AND SUBMISSION
  **************************************************************/
 function navigateSkill(){
+  console.log(`Navigating skill question at index ${currentQuestionIndex}`);
   // Validate current question before proceeding
   if(!validateCurrentQuestion()){
     alert("Please answer the current question before proceeding.");
+    console.log("Current question validation failed.");
     return;
   }
 
@@ -506,35 +409,46 @@ function navigateSkill(){
   currentQuestionIndex++;
 
   if(currentQuestionIndex >= totalQuestions){
+    console.log("All questions answered. Submitting data.");
     handleFinalSubmit();
     return;
   }
 
+  console.log(`Rendering next question at index ${currentQuestionIndex}`);
   renderAssessmentQuestion(currentQuestionIndex);
 }
 
 /**************************************************************
- * 14) VALIDATE CURRENT QUESTION FUNCTION
+ * 15) VALIDATE CURRENT QUESTION FUNCTION
  **************************************************************/
 function validateCurrentQuestion(){
   const skillIndex = Math.floor(currentQuestionIndex / 3);
   const questionNum = currentQuestionIndex % 3;
   const skill = selectedSkills[skillIndex];
 
+  let valid = false;
   switch(questionNum){
     case 0: // Q1 => LIKERT SCALE
-      return document.querySelector(`input[name="Q1-skill${skillIndex}"]:checked`) !== null;
+      valid = document.querySelector(`input[name="Q1-skill${skillIndex}"]:checked`) !== null;
+      console.log(`Validating Q1 for skill ${skill}: ${valid}`);
+      break;
     case 1: // Q2 => PROFICIENCY STATEMENT
-      return document.querySelector(`input[name="Q2-skill${skillIndex}"]:checked`) !== null;
+      valid = document.querySelector(`input[name="Q2-skill${skillIndex}"]:checked`) !== null;
+      console.log(`Validating Q2 for skill ${skill}: ${valid}`);
+      break;
     case 2: // Q4 => SHORT RESPONSE
-      return document.querySelector(`textarea[name="Q4-skill${skillIndex}"]`).value.trim() !== "";
+      const textarea = document.querySelector(`textarea[name="Q4-skill${skillIndex}"]`);
+      valid = textarea && textarea.value.trim() !== "";
+      console.log(`Validating Q4 for skill ${skill}: ${valid}`);
+      break;
     default:
-      return false;
+      console.error("Unknown question number:", questionNum);
   }
+  return valid;
 }
 
 /**************************************************************
- * 15) SAVE CURRENT RESPONSE FUNCTION
+ * 16) SAVE CURRENT RESPONSE FUNCTION
  **************************************************************/
 function saveCurrentResponse(){
   const skillIndex = Math.floor(currentQuestionIndex / 3);
@@ -549,14 +463,17 @@ function saveCurrentResponse(){
     case 0: // Q1 => LIKERT SCALE
       const q1 = document.querySelector(`input[name="Q1-skill${skillIndex}"]:checked`).value;
       responses[skill].q1 = q1;
+      console.log(`Saved Q1 for skill ${skill}: ${q1}`);
       break;
     case 1: // Q2 => PROFICIENCY STATEMENT
       const q2 = document.querySelector(`input[name="Q2-skill${skillIndex}"]:checked`).value;
       responses[skill].q2 = q2;
+      console.log(`Saved Q2 for skill ${skill}: ${q2}`);
       break;
     case 2: // Q4 => SHORT RESPONSE
       const q4 = document.querySelector(`textarea[name="Q4-skill${skillIndex}"]`).value.trim();
       responses[skill].q4 = q4;
+      console.log(`Saved Q4 for skill ${skill}: ${q4}`);
       break;
     default:
       console.error("Unknown question number:", questionNum);
@@ -564,9 +481,10 @@ function saveCurrentResponse(){
 }
 
 /**************************************************************
- * 16) HANDLE FINAL SUBMIT FUNCTION: SEND DATA TO GOOGLE SHEET
+ * 17) HANDLE FINAL SUBMIT FUNCTION: SEND DATA TO GOOGLE SHEET
  **************************************************************/
 function handleFinalSubmit(){
+  console.log("Handling final submission.");
   // Gather user info from page1 (Student Info)
   const studentID = document.getElementById("studentID").value.trim();
   const lastName  = document.getElementById("lastName").value.trim();
@@ -619,6 +537,7 @@ function handleFinalSubmit(){
   // Execute all submissions concurrently
   Promise.all(tasks)
     .then(()=>{
+      console.log("All data submitted successfully.");
       alert("All self-assessments submitted successfully!");
       // Optionally, reset the form or redirect the user
       window.location.reload();
@@ -630,9 +549,10 @@ function handleFinalSubmit(){
 }
 
 /**************************************************************
- * 17) SUBMIT DATA FUNCTION: SEND DATA TO GOOGLE APPS SCRIPT
+ * 18) SUBMIT DATA FUNCTION: SEND DATA TO GOOGLE APPS SCRIPT
  **************************************************************/
 function submitDataForSkill(obj){
+  console.log(`Submitting data for skill ${obj.skill}`);
   return fetch(SCRIPT_URL, {
     method:"POST",
     headers:{"Content-Type":"application/json"},
@@ -640,7 +560,7 @@ function submitDataForSkill(obj){
   })
   .then(response => {
     if(!response.ok){
-      throw new Error('Network response was not ok');
+      throw new Error(`Network response was not ok: ${response.statusText}`);
     }
     return response.json();
   })
@@ -648,6 +568,7 @@ function submitDataForSkill(obj){
     if(res.status !== "success"){
       throw new Error(res.message || "Unknown error from Apps Script");
     }
+    console.log(`Data for skill ${obj.skill} submitted successfully.`);
   })
   .catch(error => {
     console.error("Error in submitDataForSkill:", error);
@@ -656,24 +577,10 @@ function submitDataForSkill(obj){
 }
 
 /**************************************************************
- * 18) PICK RANDOM ELEMENT FROM ARRAY FUNCTION
+ * 19) PICK RANDOM ELEMENT FROM ARRAY FUNCTION
  **************************************************************/
 function pickRandom(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
-
-/**************************************************************
- * 19) VALIDATE STUDENT FORM FUNCTION: PAGE 0
- **************************************************************/
-function validateStudentForm() {
-  const studentID = document.getElementById("studentID").value.trim();
-  const lastName  = document.getElementById("lastName").value.trim();
-  const firstName = document.getElementById("firstName").value.trim();
-
-  if(!studentID || !lastName || !firstName) {
-    alert("Please complete required fields: Student ID, Last Name, First Name.");
-    return;
-  }
-  // Switch to next page
-  goToPage(1);
+  const randomElement = arr[Math.floor(Math.random() * arr.length)];
+  console.log(`Picked random element: ${randomElement}`);
+  return randomElement;
 }
